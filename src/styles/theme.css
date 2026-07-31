@@ -1,0 +1,175 @@
+/**
+ * Design tokens for Tempo.
+ * Everything downstream reads these custom properties — never a literal
+ * color, size, duration or easing curve in a component file.
+ */
+
+:root {
+  /* ---------------------------------------------------------------- */
+  /* Color — warm-neutral scale, 10 steps, background → text          */
+  /* ---------------------------------------------------------------- */
+  --color-0: #0b0a09; /* page background */
+  --color-1: #15130f; /* raised surface */
+  --color-2: #211d18; /* card / panel */
+  --color-3: #332c24; /* border, hairline */
+  --color-4: #4a4137; /* border, strong */
+  --color-5: #675c4e; /* disabled text */
+  --color-6: #877962; /* muted text — 4.65:1 on --color-0 */
+  --color-7: #afa48d; /* secondary text — 8.0:1 */
+  --color-8: #d8d2c2; /* primary text, dimmed */
+  --color-9: #f3f0e7; /* primary text — 17.4:1 */
+
+  /* Accent — the one warm-orange spot color on an otherwise monochrome
+     page. Used deliberately, not everywhere: emphasis words, active states,
+     the conversion moment in pricing/game. Hero stays untouched. */
+  --color-accent: #ff5a36;
+  --color-accent-strong: #e8481f; /* hover / active */
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 16%, transparent);
+
+  /* Pricing/game alias — same color, kept as its own name since those
+     sections reference it directly. */
+  --color-pricing-accent: var(--color-accent);
+  --color-pricing-accent-strong: var(--color-accent-strong);
+  --color-pricing-accent-soft: color-mix(
+    in srgb,
+    var(--color-pricing-accent) 14%,
+    transparent
+  );
+
+  /* Semantic aliases */
+  --color-bg: var(--color-0);
+  --color-surface: var(--color-1);
+  --color-border: var(--color-3);
+  --color-text-muted: var(--color-6);
+  --color-text-secondary: var(--color-7);
+  --color-text: var(--color-9);
+
+  /* ---------------------------------------------------------------- */
+  /* Typography — fluid clamp scale, 1.25 step, 375px → 1440px        */
+  /* ---------------------------------------------------------------- */
+  --font-display: "Unbounded", "Arial", sans-serif;
+  --font-text: "Onest", "Arial", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", monospace;
+
+  --text-xs: clamp(0.64rem, 0.6118rem + 0.0075vw, 0.72rem);
+  --text-sm: clamp(0.8rem, 0.7648rem + 0.0094vw, 0.9rem);
+  --text-base: clamp(1rem, 0.956rem + 0.0117vw, 1.125rem);
+  --text-md: clamp(1.25rem, 1.195rem + 0.0147vw, 1.4062rem);
+  --text-lg: clamp(1.5625rem, 1.4937rem + 0.0183vw, 1.7578rem);
+  --text-xl: clamp(1.9531rem, 1.8672rem + 0.0229vw, 2.1973rem);
+  --text-2xl: clamp(2.4414rem, 2.3339rem + 0.0287vw, 2.7466rem);
+  --text-3xl: clamp(3.0518rem, 2.9174rem + 0.0358vw, 3.4332rem);
+  --text-4xl: clamp(3.8147rem, 3.6468rem + 0.0448vw, 4.2915rem);
+  --text-5xl: clamp(4.7684rem, 4.5585rem + 0.056vw, 5.3644rem);
+  --text-6xl: clamp(5.9605rem, 5.6981rem + 0.07vw, 6.7055rem);
+  --text-7xl: clamp(7.4506rem, 7.1227rem + 0.0874vw, 8.3819rem);
+
+  /* One-off lockup sizes — outside the modular scale on purpose */
+  --text-hero-wordmark: clamp(3.5rem, 0.507rem + 0.7981vw, 12rem);
+  --size-hero-mark: clamp(2rem, 1.5599rem + 0.1174vw, 3.25rem);
+  --text-pain-h2: clamp(1.875rem, 1.3908rem + 0.1291vw, 3.25rem);
+  --text-pain-number: clamp(2.5rem, 1.7958rem + 0.1878vw, 4.5rem);
+  --text-how-number: clamp(6rem, 12vw, 11rem);
+  --text-marker: 0.75rem; /* fixed 12px — not fluid, a small print label */
+
+  --leading-tight: 0.9;
+  --leading-snug: 1.05;
+  --leading-heading: 1;
+  --leading-number: 0.8;
+  --leading-body: 1.5;
+  --tracking-tight: -0.03em;
+  --tracking-snug: -0.01em;
+  --tracking-wide: 0.08em;
+
+  --opacity-faint: 0.07;
+
+  /* ---------------------------------------------------------------- */
+  /* Spacing — 4px base unit                                          */
+  /* ---------------------------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* Fluid section rhythm + layout */
+  --space-section-sm: clamp(3rem, 2.2958rem + 0.1878vw, 5rem);
+  --space-section-md: clamp(4rem, 2.9437rem + 0.2817vw, 7rem);
+  --space-section-lg: clamp(5.5rem, 3.9155rem + 0.4225vw, 10rem);
+  --layout-margin: clamp(1rem, 0.4718rem + 0.1408vw, 2.5rem);
+  --layout-gutter: clamp(1rem, 0.7359rem + 0.0704vw, 1.75rem);
+  --layout-max-width: 90rem;
+
+  /* ---------------------------------------------------------------- */
+  /* Radius                                                           */
+  /* ---------------------------------------------------------------- */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 999px;
+
+  /* ---------------------------------------------------------------- */
+  /* Motion — durations + easing curves, nothing hardcoded in JS/TSX  */
+  /* ---------------------------------------------------------------- */
+  --duration-fast: 0.3s;
+  --duration-base: 0.65s;
+  --duration-slow: 1.075s;
+  --duration-slower: 1.25s;
+  --duration-reveal: 3s;
+  --stagger-tight: 0.03s;
+  --stagger-base: 0.05s;
+  --stagger-loose: 0.08s;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.31, 0.75, 0.22, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-in: cubic-bezier(0.55, 0, 0.7, 0);
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-accent: var(--color-accent);
+  --color-accent-strong: var(--color-accent-strong);
+
+  --font-display: var(--font-display);
+  --font-text: var(--font-text);
+  --font-mono: var(--font-mono);
+
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-md: var(--text-md);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+  --text-5xl: var(--text-5xl);
+  --text-6xl: var(--text-6xl);
+  --text-7xl: var(--text-7xl);
+  --text-hero-wordmark: var(--text-hero-wordmark);
+  --size-hero-mark: var(--size-hero-mark);
+  --text-pain-h2: var(--text-pain-h2);
+  --text-pain-number: var(--text-pain-number);
+  --text-how-number: var(--text-how-number);
+  --text-marker: var(--text-marker);
+
+  --spacing-section-sm: var(--space-section-sm);
+  --spacing-section-md: var(--space-section-md);
+  --spacing-section-lg: var(--space-section-lg);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+}
