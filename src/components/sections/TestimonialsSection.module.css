@@ -1,0 +1,243 @@
+.section {
+  background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 25%,
+    black 75%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 25%,
+    black 75%,
+    transparent 100%
+  );
+}
+
+.glow::before,
+.glow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+}
+
+.glow::before {
+  width: min(70rem, 110vw);
+  height: min(70rem, 110vw);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-accent) 32%, transparent) 0%,
+    transparent 65%
+  );
+  transform: translate(-50%, -50%);
+}
+
+.glow::after {
+  width: min(44rem, 75vw);
+  height: min(44rem, 75vw);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-accent) 26%, transparent) 0%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glow::before {
+    animation: driftMain 16s ease-in-out infinite alternate;
+  }
+
+  .glow::after {
+    animation: driftSecondary 12s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes driftMain {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(calc(-50% + 9rem), calc(-50% - 7rem)) scale(1.3);
+  }
+  100% {
+    transform: translate(calc(-50% - 8rem), calc(-50% + 6rem)) scale(0.8);
+  }
+}
+
+@keyframes driftSecondary {
+  0% {
+    transform: translate(calc(-50% - 10rem), calc(-50% + 8rem)) scale(0.75);
+  }
+  50% {
+    transform: translate(calc(-50% + 6rem), calc(-50% - 5rem)) scale(1.15);
+  }
+  100% {
+    transform: translate(calc(-50% + 11rem), calc(-50% + 9rem)) scale(1.05);
+  }
+}
+
+.container {
+  max-width: 50rem; /* ~800px */
+  margin-inline: auto;
+  text-align: center;
+  position: relative;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+  text-align: center;
+  margin: 0 0 var(--space-9);
+}
+
+.spotlight {
+  position: relative;
+  min-height: clamp(18rem, 10rem + 20vw, 24rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quoteMark {
+  position: absolute;
+  top: clamp(-3rem, -2rem - 2vw, -1.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 5rem + 10vw, 14rem);
+  line-height: 1;
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-text);
+  opacity: 0.35;
+  z-index: 0;
+  user-select: none;
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .quoteMark {
+    color: var(--color-text);
+  }
+}
+
+.quote {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.quoteText {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-snug);
+  color: var(--color-text);
+  margin: 0;
+  max-width: 48ch;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-style: normal;
+}
+
+.authorName {
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.authorRole {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.progress {
+  display: flex;
+  gap: var(--space-3);
+  max-width: 20rem;
+  margin: var(--space-8) auto 0;
+}
+
+.segment {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  padding: var(--space-2) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+.segment::before {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 2px;
+  background: var(--color-3);
+}
+
+.segmentFill {
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 2px;
+  background: var(--color-accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.segmentFill[data-state="done"] {
+  transform: scaleX(1);
+}
+
+.segmentFill[data-state="active"] {
+  transform: scaleX(1);
+}
+
+.segmentFill.animated[data-state="active"] {
+  animation: segmentFill linear forwards;
+}
+
+@keyframes segmentFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .quoteText {
+    font-size: var(--text-lg);
+    max-width: 26ch;
+  }
+}

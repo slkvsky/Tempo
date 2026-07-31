@@ -1,0 +1,121 @@
+.section {
+  background: var(--color-bg);
+}
+
+.container {
+  max-width: 45rem; /* ~720px */
+  margin-inline: auto;
+  text-align: center;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: var(--text-pain-h2);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+  text-align: center;
+  margin: 0 0 var(--space-8);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-6);
+  text-align: left;
+}
+
+.divider {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--color-3);
+  transform-origin: left center;
+}
+
+.numberColumn {
+  flex-shrink: 0;
+}
+
+.bigNumber {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-pain-number);
+  font-weight: 700;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-accent);
+}
+
+@supports not (-webkit-text-stroke: 1px black) {
+  .bigNumber {
+    color: var(--color-accent);
+  }
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.marker {
+  font-family: var(--font-mono);
+  font-size: var(--text-marker);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.itemText {
+  font-family: var(--font-text);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--color-6);
+}
+
+.reframe {
+  max-width: 38ch;
+  margin: var(--space-8) auto 0;
+  text-align: center;
+  font-family: var(--font-text);
+  font-size: var(--text-lg);
+  line-height: var(--leading-body);
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.reframeLead {
+  font-weight: 700;
+}
+
+.reframeHighlight {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+@media (max-width: 560px) {
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 640px) {
+  .reframe {
+    max-width: 32ch;
+  }
+}
