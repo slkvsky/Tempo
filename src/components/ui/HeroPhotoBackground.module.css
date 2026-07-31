@@ -1,0 +1,41 @@
+.kenBurns {
+  position: absolute;
+  inset: 0;
+  animation: ken-burns 28s ease-in-out infinite;
+}
+
+.breathe {
+  position: absolute;
+  inset: -20%;
+  border-radius: 999px;
+  filter: blur(90px);
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--color-9) 55%, transparent),
+    transparent 70%
+  );
+  animation: breathe 22s ease-in-out infinite;
+}
+
+@keyframes ken-burns {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translate(-2%, 0%) scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: translate(2%, -3%) scale(1.08);
+  }
+}

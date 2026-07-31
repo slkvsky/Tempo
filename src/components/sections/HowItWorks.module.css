@@ -1,0 +1,113 @@
+.section {
+  background: var(--color-bg);
+}
+
+.container {
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.sub {
+  font-family: var(--font-text);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--color-text-secondary);
+  max-width: 48ch;
+  margin: var(--space-4) auto 0;
+}
+
+.steps {
+  list-style: none;
+  margin: var(--space-9) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.step {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  padding: var(--space-8) var(--space-6);
+}
+
+.divider {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: var(--color-3);
+  transform-origin: top center;
+}
+
+.number {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-6);
+  font-family: var(--font-display);
+  font-size: var(--text-how-number);
+  line-height: var(--leading-number);
+  color: var(--color-accent);
+  opacity: var(--opacity-faint);
+  user-select: none;
+  pointer-events: none;
+}
+
+.stepContent {
+  position: relative;
+  overflow: hidden;
+}
+
+.stepTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-snug);
+  color: var(--color-text);
+  margin: 0 0 var(--space-2);
+}
+
+.stepText {
+  font-family: var(--font-text);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.footer {
+  font-family: var(--font-text);
+  font-size: var(--text-xl);
+  line-height: var(--leading-body);
+  color: var(--color-text);
+  max-width: 40ch;
+  margin: var(--space-10) auto 0;
+}
+
+@media (max-width: 768px) {
+  .steps {
+    flex-direction: column;
+  }
+
+  .step {
+    padding: var(--space-6) 0;
+  }
+
+  .step:not(:first-child) {
+    border-top: 1px solid var(--color-3);
+  }
+
+  .divider {
+    display: none;
+  }
+}
