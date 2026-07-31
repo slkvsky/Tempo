@@ -1,0 +1,15 @@
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * Reserves scroll room for the fixed footer to "reveal" through. Must stay
+ * fully transparent — a background here (even inherited) would paint over
+ * the footer for this entire span, since CSS backgrounds cover the padding
+ * box, not just content. Every section already paints its own opaque
+ * background, so `.main` itself needs none.
+ */
+.spacer {
+  height: 100svh;
+}
