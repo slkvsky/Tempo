@@ -1,29 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useSyncExternalStore } from "react";
+
+const QUERY = "(prefers-reduced-motion: reduce)";
 
 /**
- * Same intent as Motion's `useReducedMotion`, but safe to use for values
- * that affect the initial render tree (e.g. picking between two
- * `useTransform` output ranges).
+ * One shared subscription for the whole page, rather than one per component.
  *
- * Motion's hook reads the real browser preference synchronously on the
- * client via `useState(prefersReducedMotion.current)`, but has no such
- * signal server-side — so branching render output on its raw value
- * produces a hydration mismatch whenever the visitor actually has reduced
- * motion enabled (server renders the "motion" tree, client's first paint
- * renders the "reduced" tree). This defers to `false` — matching what SSR
- * always renders — until after mount, then flips to the real value on the
- * next client-only render, which is not compared against server HTML.
+ * Twelve components call this hook. With the previous `useState` +
+ * `useEffect(() => setMounted(true))` implementation, each one queued its own
+ * post-hydration state flip, so the first client render was followed by twelve
+ * separate section-subtree re-renders in a single tick — a guaranteed long task
+ * right when the page is trying to become interactive. `useSyncExternalStore`
+ * over a single MediaQueryList collapses that into one.
  */
+function subscribe(onChange: () => void) {
+  const mql = window.matchMedia(QUERY);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+}
+
+function getSnapshot() {
+  return window.matchMedia(QUERY).matches;
+}
+
+/**
+ * The server has no way to know the visitor's motion preference, so the
+ * server snapshot is always `false` — matching what SSR renders. React swaps
+ * in the real client value after hydration without a mismatch, which is the
+ * same guarantee the old `mounted` flag provided.
+ */
+function getServerSnapshot() {
+  return false;
+}
+
 export function useSafeReducedMotion(): boolean {
-  const reduceMotion = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  return mounted && Boolean(reduceMotion);
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

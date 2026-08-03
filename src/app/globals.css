@@ -33,6 +33,18 @@ html {
   scroll-margin-top: 5.5rem;
 }
 
+/*
+ * NOTE: `content-visibility: auto` on the off-screen sections was tried here
+ * and deliberately rejected. It skips layout for sections that aren't on
+ * screen, which means they report their `contain-intrinsic-size` guess rather
+ * than their real height — so anchor navigation (which measures
+ * `getBoundingClientRect()` to scroll to a heading) computed targets that were
+ * off by up to ~680px, and the page height shifted ~1200px as sections
+ * rendered in mid-scroll. The per-frame costs it would have saved are already
+ * addressed by the grain/blur/animation-gating fixes, so it isn't worth
+ * breaking in-page navigation for.
+ */
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
