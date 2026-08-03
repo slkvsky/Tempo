@@ -1,19 +1,38 @@
+/*
+ * Overscan for the parallax. `backgroundY` moves this layer between -100px and
+ * +100px, so it has to extend at least that far past the section on both the
+ * top and bottom edges or the photo (and the grain/glow above it) runs out
+ * mid-viewport. 140px leaves headroom; the section clips the overflow.
+ */
+.parallaxLayer {
+  position: absolute;
+  inset: -140px 0;
+}
+
 .kenBurns {
   position: absolute;
   inset: 0;
   animation: ken-burns 28s ease-in-out infinite;
 }
 
+/*
+ * The soft light bloom over the photo. Deliberately NO `filter: blur()` and no
+ * `mix-blend-mode` here: a radial-gradient is already perfectly smooth, so the
+ * blur was re-running a ~180px Gaussian over 140% of the viewport every frame
+ * (the element animates forever) for an effect the gradient itself provides.
+ * Blend mode is likewise redundant — this is a pale gradient over a dark photo,
+ * where `screen` and normal compositing land in the same place — and it was the
+ * thing preventing WebKit from caching the whole hero layer.
+ */
 .breathe {
   position: absolute;
   inset: -20%;
   border-radius: 999px;
-  filter: blur(90px);
-  mix-blend-mode: screen;
   background: radial-gradient(
     circle at 50% 50%,
-    color-mix(in srgb, var(--color-9) 55%, transparent),
-    transparent 70%
+    color-mix(in srgb, var(--color-9) 30%, transparent),
+    color-mix(in srgb, var(--color-9) 10%, transparent) 40%,
+    transparent 72%
   );
   animation: breathe 22s ease-in-out infinite;
 }

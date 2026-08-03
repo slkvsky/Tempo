@@ -1,17 +1,20 @@
-import { useId } from "react";
-
 interface GrainOverlayProps {
   className?: string;
   opacity?: number;
 }
 
 /**
- * Film-grain texture built from an SVG feTurbulence filter blended over the
- * layer beneath it — zero network bytes, no raster image.
+ * Film-grain texture: a 128×128 tiled noise bitmap blended over the layer
+ * beneath it.
+ *
+ * This was previously an SVG `feTurbulence` filter. WebKit rasterizes
+ * turbulence on the CPU and re-evaluates it whenever the filtered region's
+ * transform changes — and two of the three instances live inside the hero's
+ * scroll-driven `transform`, so it was regenerating full-viewport procedural
+ * noise on every scroll frame. A pre-baked tile is a cached bitmap the
+ * compositor can simply repeat, at ~8 KB and visually the same.
  */
 export function GrainOverlay({ className, opacity = 0.18 }: GrainOverlayProps) {
-  const filterId = `grain-filter-${useId()}`;
-
   return (
     <div
       aria-hidden="true"
@@ -20,29 +23,11 @@ export function GrainOverlay({ className, opacity = 0.18 }: GrainOverlayProps) {
         position: "absolute",
         inset: 0,
         opacity,
+        backgroundImage: "url(/noise.png)",
+        backgroundRepeat: "repeat",
         mixBlendMode: "overlay",
         pointerEvents: "none",
       }}
-    >
-      <svg width="0" height="0">
-        <filter id={filterId}>
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.9"
-            numOctaves={3}
-            stitchTiles="stitch"
-            result="noise"
-          />
-          <feColorMatrix in="noise" type="saturate" values="0" />
-        </filter>
-      </svg>
-      <div
-        style={{
-          position: "absolute",
-          inset: "-2px",
-          filter: `url(#${filterId})`,
-        }}
-      />
-    </div>
+    />
   );
 }

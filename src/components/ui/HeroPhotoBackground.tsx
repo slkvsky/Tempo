@@ -1,15 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { motion, type MotionValue } from "motion/react";
 import { duration, ease } from "@/lib/motion-tokens";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { HERO_PHOTO } from "@/lib/hero-photo";
 import styles from "./HeroPhotoBackground.module.css";
 
 interface HeroPhotoBackgroundProps {
-  imageSrc: string;
-  imageWidth: number;
-  imageHeight: number;
   /** Scroll-linked vertical offset in px, from the section's own useScroll. */
   backgroundY: MotionValue<number>;
   /** Scroll-linked darken amount (0..1), from the section's own useScroll. */
@@ -25,26 +22,34 @@ interface HeroPhotoBackgroundProps {
  * content layout around it differs.
  */
 export function HeroPhotoBackground({
-  imageSrc,
-  imageWidth,
-  imageHeight,
   backgroundY,
   overlayOpacity,
   grainOpacity = 0.18,
 }: HeroPhotoBackgroundProps) {
   return (
     <div className="absolute inset-0">
-      <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
+      {/*
+       * Overscanned past the section on both edges. The parallax translates
+       * this whole group by ±100px, so a layer sized exactly to the section
+       * would expose bare background at the bottom on load (y = -100) and at
+       * the top once scrolled — which is what cut the photo off short and left
+       * a hard line where the grain/glow layer ended.
+       */}
+      <motion.div className={styles.parallaxLayer} style={{ y: backgroundY }}>
         <div className={styles.kenBurns}>
-          <Image
-            src={imageSrc}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={HERO_PHOTO.src}
+            srcSet={HERO_PHOTO.srcSet}
+            sizes={HERO_PHOTO.sizes}
             alt=""
             aria-hidden="true"
-            priority
-            width={imageWidth}
-            height={imageHeight}
-            className="absolute inset-x-0 top-0 w-full"
-            style={{ height: "110%", objectFit: "cover", opacity: 0.6 }}
+            fetchPriority="high"
+            decoding="async"
+            width={HERO_PHOTO.width}
+            height={HERO_PHOTO.height}
+            className="absolute inset-0 h-full w-full"
+            style={{ objectFit: "cover", opacity: 0.6 }}
           />
         </div>
 
