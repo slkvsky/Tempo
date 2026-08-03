@@ -99,8 +99,6 @@ export function HowItWorks({ content }: HowItWorksProps) {
             );
           })}
         </ol>
-
-        <p className={styles.footer}>{content.footer}</p>
       </div>
     </section>
   );

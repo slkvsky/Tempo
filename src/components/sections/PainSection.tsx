@@ -94,7 +94,7 @@ export function PainSection({ content }: PainSectionProps) {
                 variants={fadeRise(index * stagger.loose, ITEM_RISE_DISTANCE)}
               >
                 <span aria-hidden="true" className={styles.marker}>
-                  {`спроба ${String(index + 1).padStart(2, "0")}`}
+                  {`${content.attemptLabel} ${String(index + 1).padStart(2, "0")}`}
                 </span>
                 <span className={styles.itemText}>{item}</span>
               </motion.div>

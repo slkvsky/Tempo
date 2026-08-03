@@ -87,6 +87,7 @@
 
 .cta {
   position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -111,13 +112,20 @@
   transform: translateY(0);
 }
 
+/* Solid circle + blur(24px) expressed directly as a radial-gradient — same
+   halo without re-running a Gaussian on every frame of the 2.6s `ctaPulse`. */
 .ctaGlow {
   position: absolute;
-  inset: -45%;
+  inset: -40%;
   z-index: 0;
   border-radius: 50%;
-  background: var(--color-pricing-accent-soft);
-  filter: blur(24px);
+  opacity: 0.6;
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--color-pricing-accent-soft),
+    color-mix(in srgb, var(--color-pricing-accent) 7%, transparent) 42%,
+    transparent 66%
+  );
   pointer-events: none;
 }
 
@@ -130,11 +138,11 @@
 @keyframes ctaPulse {
   0%,
   100% {
-    opacity: 0.5;
+    opacity: 0.3;
     transform: scale(1);
   }
   50% {
-    opacity: 0.9;
+    opacity: 0.55;
     transform: scale(1.08);
   }
 }
@@ -146,6 +154,21 @@
   font-size: var(--text-md);
   font-weight: 600;
   color: var(--color-0);
+}
+
+.telegramLink {
+  display: block;
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.telegramLink:hover {
+  color: var(--color-text);
 }
 
 .stats {
