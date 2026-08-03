@@ -6,6 +6,7 @@ import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { fadeRise, maskRise, scaleIn } from "@/components/motion/variants";
 import { CountUp } from "@/components/motion/CountUp";
 import { stagger } from "@/lib/motion-tokens";
+import { scrollToAnchor } from "@/lib/hooks/useLenis";
 import styles from "./FinalCtaSection.module.css";
 
 interface FinalCtaSectionProps {
@@ -60,10 +61,12 @@ export function FinalCtaSection({ content }: FinalCtaSectionProps) {
 
         <motion.a
           href={content.ctaHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cursor-text="Почати"
+          data-cursor-text={content.cursorStart}
           className={styles.cta}
+          onClick={(event) => {
+            event.preventDefault();
+            scrollToAnchor(content.ctaHref);
+          }}
           initial={reduceMotion ? "visible" : "hidden"}
           animate={reduceMotion ? "visible" : undefined}
           whileInView={reduceMotion ? undefined : "visible"}
@@ -72,6 +75,20 @@ export function FinalCtaSection({ content }: FinalCtaSectionProps) {
         >
           <span className={styles.ctaGlow} aria-hidden="true" />
           <span className={styles.ctaLabel}>{content.cta}</span>
+        </motion.a>
+
+        <motion.a
+          href={content.telegramHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.telegramLink}
+          initial={reduceMotion ? "visible" : "hidden"}
+          animate={reduceMotion ? "visible" : undefined}
+          whileInView={reduceMotion ? undefined : "visible"}
+          viewport={reduceMotion ? undefined : { once: true, amount: 0.4 }}
+          variants={fadeRise(0.24)}
+        >
+          {content.telegramText}
         </motion.a>
 
         <ul className={styles.stats}>

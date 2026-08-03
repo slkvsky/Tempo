@@ -2,19 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { TestimonialsContent } from "@/content/site";
+import { siteContent } from "@/content/site";
+import type { Locale } from "@/lib/locale";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { duration, ease } from "@/lib/motion-tokens";
 import styles from "./TestimonialsSection.module.css";
 
 interface TestimonialsSectionProps {
-  content: TestimonialsContent;
+  locale: Locale;
 }
 
 const AUTO_ADVANCE_MS = 6000;
 const QUOTE_RISE_DISTANCE = 16;
 
-export function TestimonialsSection({ content }: TestimonialsSectionProps) {
+/*
+ * Content is imported by `locale` rather than received as a prop: `tabLabel`
+ * is a template function, and functions can't cross the RSC server->client
+ * prop boundary (Next throws at build time if a Server Component page tries
+ * to pass one down to this "use client" component).
+ */
+export function TestimonialsSection({ locale }: TestimonialsSectionProps) {
+  const content = siteContent[locale].testimonials;
   const reduceMotion = useSafeReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const { items } = content;
@@ -71,7 +79,7 @@ export function TestimonialsSection({ content }: TestimonialsSectionProps) {
         </div>
 
         {items.length > 1 && (
-          <div className={styles.progress} role="tablist" aria-label="Відгуки">
+          <div className={styles.progress} role="tablist" aria-label={content.tablistLabel}>
             {items.map((item, index) => {
               const state =
                 index < activeIndex
@@ -86,7 +94,7 @@ export function TestimonialsSection({ content }: TestimonialsSectionProps) {
                   type="button"
                   role="tab"
                   aria-selected={index === activeIndex}
-                  aria-label={`Відгук ${index + 1} з ${items.length}`}
+                  aria-label={content.tabLabel(index + 1, items.length)}
                   className={styles.segment}
                   onClick={() => setActiveIndex(index)}
                 >

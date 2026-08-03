@@ -11,9 +11,9 @@ import { FaqSection } from "@/components/sections/FaqSection";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
 import { Footer } from "@/components/Footer";
 import { siteContent } from "@/content/site";
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 
-const locale = "uk" as const;
+const locale = "en" as const;
 const content = siteContent[locale];
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description: content.meta.description,
 };
 
-export default function Home() {
+export default function HomeEn() {
   return (
     <>
       <main className={styles.main}>

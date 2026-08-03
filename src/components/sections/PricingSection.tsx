@@ -2,49 +2,74 @@
 
 import { motion } from "motion/react";
 import type { PricingContent, PricingTier } from "@/content/site";
+import type { Locale } from "@/lib/locale";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
+import { useSpinWhenVisible } from "@/lib/hooks/useSpinWhenVisible";
 import { fadeRise } from "@/components/motion/variants";
 import { CountUp } from "@/components/motion/CountUp";
+import { Currency } from "@/components/ui/Currency";
 import { stagger } from "@/lib/motion-tokens";
-import { parseLeadingNumber } from "@/lib/parse-leading-number";
+import { formatPrice } from "@/lib/format-price";
 import styles from "./PricingSection.module.css";
 
 interface PricingSectionProps {
   content: PricingContent;
+  locale: Locale;
 }
 
-function TierPrice({ price }: { price: string }) {
-  const parsed = parseLeadingNumber(price);
-  if (!parsed) return <>{price}</>;
-
+function TierPrice({
+  priceNow,
+  priceThen,
+  content,
+  locale,
+}: {
+  priceNow: number;
+  priceThen: number;
+  content: PricingContent;
+  locale: Locale;
+}) {
   return (
     <>
-      <CountUp value={parsed.value} />
-      {parsed.rest}
+      <CountUp value={priceNow} />
+      <Currency>{content.currency}</Currency> · {content.launchPriceLabel} (
+      {content.laterPriceLabel} {formatPrice(priceThen, locale)}
+      <Currency>{content.currency}</Currency>)
     </>
   );
 }
 
-function TierCard({ tier, index }: { tier: PricingTier; index: number }) {
+function TierCard({
+  tier,
+  index,
+  content,
+  locale,
+}: {
+  tier: PricingTier;
+  index: number;
+  content: PricingContent;
+  locale: Locale;
+}) {
   const reduceMotion = useSafeReducedMotion();
   const highlighted = Boolean(tier.badge);
+  const { ref: tierRef, isVisible } = useSpinWhenVisible<HTMLLIElement>();
 
   return (
     <motion.li
+      ref={tierRef}
       className={`${styles.tier} ${highlighted ? styles.tierHighlighted : ""}`}
+      data-spin={isVisible}
       initial={reduceMotion ? "visible" : "hidden"}
       animate={reduceMotion ? "visible" : undefined}
       whileInView={reduceMotion ? undefined : "visible"}
       viewport={reduceMotion ? undefined : { once: true, amount: 0.2 }}
       variants={fadeRise(index * stagger.loose)}
     >
-      {highlighted && <span className={styles.glow} aria-hidden="true" />}
-
+      
       {tier.badge && <span className={styles.badge}>{tier.badge}</span>}
 
       <h3 className={styles.tierName}>{tier.name}</h3>
       <p className={styles.tierPrice}>
-        <TierPrice price={tier.price} />
+        <TierPrice priceNow={tier.priceNow} priceThen={tier.priceThen} content={content} locale={locale} />
       </p>
 
       <ul className={styles.featureList}>
@@ -67,9 +92,7 @@ function TierCard({ tier, index }: { tier: PricingTier; index: number }) {
  * it's the conversion moment. Three tiers, the middle one elevated with a
  * glow and its own hue; the price itself counts up on scroll-into-view.
  */
-export function PricingSection({ content }: PricingSectionProps) {
-  const reduceMotion = useSafeReducedMotion();
-
+export function PricingSection({ content, locale }: PricingSectionProps) {
   return (
     <section
       aria-labelledby="pricing-heading"
@@ -87,22 +110,10 @@ export function PricingSection({ content }: PricingSectionProps) {
 
         <ul className={styles.tiers}>
           {content.tiers.map((tier, index) => (
-            <TierCard key={tier.name} tier={tier} index={index} />
+            <TierCard key={tier.name} tier={tier} index={index} content={content} locale={locale} />
           ))}
         </ul>
 
-        <motion.p
-          className={styles.bump}
-          initial={reduceMotion ? "visible" : "hidden"}
-          animate={reduceMotion ? "visible" : undefined}
-          whileInView={reduceMotion ? undefined : "visible"}
-          viewport={reduceMotion ? undefined : { once: true, amount: 0.2 }}
-          variants={fadeRise(content.tiers.length * stagger.loose)}
-        >
-          {content.bump}
-        </motion.p>
-
-        <p className={styles.guarantee}>{content.guarantee}</p>
         <p className={styles.badges}>{content.badges}</p>
       </div>
     </section>

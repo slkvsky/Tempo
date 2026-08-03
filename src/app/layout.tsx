@@ -5,10 +5,17 @@ import { Header } from "@/components/Header";
 import { siteContent } from "@/content/site";
 import "./globals.css";
 
+/**
+ * Fallback metadata for the shared root layout. `/`, `/en/*` and `/es/*` all
+ * render under this single layout (the project is a static export, so a
+ * true per-locale `<html lang>` would need a `[locale]` root segment with no
+ * unprefixed `/` — out of scope here); each locale's page exports its own
+ * `metadata` that overrides this, and `Header` corrects `document.lang` on
+ * mount once it knows which locale it's rendering.
+ */
 export const metadata: Metadata = {
-  title: "Tempo — персональний планер",
-  description:
-    "Tempo — персональний планер для тих, хто хоче встигати більше, не втрачаючи ясності голови.",
+  title: siteContent.uk.meta.title,
+  description: siteContent.uk.meta.description,
 };
 
 export default function RootLayout({
@@ -23,7 +30,7 @@ export default function RootLayout({
     >
       <body className="min-h-full">
         <SiteChrome />
-        <Header content={siteContent.header} />
+        <Header />
         {children}
       </body>
     </html>

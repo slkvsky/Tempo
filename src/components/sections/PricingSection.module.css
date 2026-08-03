@@ -63,7 +63,6 @@
         var(--color-pricing-accent-soft)
       )
       border-box;
-  animation: pricingBorderSpin 5s linear infinite;
   transform: scale(1.04);
   z-index: 1;
 }
@@ -74,22 +73,35 @@
   initial-value: 0deg;
 }
 
+/* Only spins while on screen — see the matching note in GameSection.module.css. */
+@media (prefers-reduced-motion: no-preference) {
+  .tierHighlighted[data-spin="true"] {
+    animation: pricingBorderSpin 5s linear infinite;
+  }
+}
+
 @keyframes pricingBorderSpin {
   to {
     --pricing-border-angle: 360deg;
   }
 }
 
+/*
+ * Fixed (not %) bleed so it never reaches the neighboring tier cards: the
+ * highlighted card sits above its siblings via z-index (needed for the
+ * scale(1.04) pop-out not to tuck under them), so anything that bled past
+ * the `.tiers` gap would paint on top of the neighbor cards' own content.
+ */
 .glow {
   position: absolute;
-  inset: -15%;
+  inset: -2rem -1rem -1rem;
   z-index: -1;
+  opacity: 0.5;
   background: radial-gradient(
     circle at 50% 0%,
     var(--color-pricing-accent-soft),
-    transparent 70%
+    transparent 65%
   );
-  filter: blur(40px);
   pointer-events: none;
 }
 
@@ -197,14 +209,6 @@
   color: var(--color-text-secondary);
   max-width: 60ch;
   margin: var(--space-8) auto 0;
-}
-
-.guarantee {
-  font-family: var(--font-text);
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  max-width: 60ch;
-  margin: var(--space-4) auto 0;
 }
 
 .badges {

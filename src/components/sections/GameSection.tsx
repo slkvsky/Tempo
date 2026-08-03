@@ -4,22 +4,27 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import type { GameContent } from "@/content/site";
+import { siteContent } from "@/content/site";
+import type { Locale } from "@/lib/locale";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
+import { useSpinWhenVisible } from "@/lib/hooks/useSpinWhenVisible";
 import { startLenis, stopLenis } from "@/lib/hooks/useLenis";
 import { fadeRise, scaleIn } from "@/components/motion/variants";
 import { CountUp } from "@/components/motion/CountUp";
+import { Currency } from "@/components/ui/Currency";
 import { duration, stagger, ease } from "@/lib/motion-tokens";
+import { formatPrice } from "@/lib/format-price";
 import styles from "./GameSection.module.css";
 
 interface GameSectionProps {
-  content: GameContent;
+  locale: Locale;
 }
 
 /**
  * Tempo Game — shows the product instead of describing it. The panel is a
  * game HUD (level counter, XP bar, quest chips), not another bullet list.
  * Everything that used to be spelled out in prose — the feature rundown,
- * beta perks, platform status, refund policy — still exists, just tucked
+ * beta perks, platform status — still exists, just tucked
  * behind a "Що всередині?" popup so it doesn't compete with the HUD for
  * attention. The popup is a portal to document.body: the panel it's
  * triggered from has an active scroll-reveal transform and overflow:hidden
@@ -80,7 +85,7 @@ function GameDetailsModal({
             type="button"
             className={styles.modalClose}
             onClick={onClose}
-            aria-label="Закрити"
+            aria-label={content.closeLabel}
           >
             ×
           </button>
@@ -114,8 +119,6 @@ function GameDetailsModal({
             <p className={styles.statusLine}>{content.statusOk}</p>
             <p className={styles.statusLine}>{content.statusWip}</p>
           </div>
-
-          <p className={styles.refund}>{content.refund}</p>
         </div>
       </motion.div>
     </motion.div>,
@@ -123,10 +126,12 @@ function GameDetailsModal({
   );
 }
 
-export function GameSection({ content }: GameSectionProps) {
+export function GameSection({ locale }: GameSectionProps) {
+  const content = siteContent[locale].game;
   const reduceMotion = useSafeReducedMotion();
   const xpProgress = content.xpPercent / 100;
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const { ref: panelRef, isVisible } = useSpinWhenVisible<HTMLDivElement>();
 
   return (
     <section
@@ -142,7 +147,9 @@ export function GameSection({ content }: GameSectionProps) {
 
       <div className={styles.container}>
         <motion.div
+          ref={panelRef}
           className={styles.panel}
+          data-spin={isVisible}
           initial={reduceMotion ? "visible" : "hidden"}
           animate={reduceMotion ? "visible" : undefined}
           whileInView={reduceMotion ? undefined : "visible"}
@@ -217,15 +224,23 @@ export function GameSection({ content }: GameSectionProps) {
           </div>
 
           <div className={styles.priceRow}>
-            <span className={styles.priceNow}>{content.priceNow}</span>
-            <span className={styles.priceLater}>{content.priceLater}</span>
+            <span className={styles.priceNow}>
+              <CountUp value={content.priceNow} />
+              <Currency>{content.currency}</Currency>
+            </span>
+            <span className={styles.priceLater}>
+              {formatPrice(content.priceLater, locale)}
+              <Currency>{content.currency}</Currency>
+            </span>
           </div>
 
           <a href="#" className={styles.cta}>
             {content.cta}
           </a>
 
-          <p className={styles.scarcity}>{content.scarcity}</p>
+          <p className={styles.scarcity}>
+            {content.scarcity} {content.releaseLine(content.releaseDate)}
+          </p>
 
           <button
             type="button"

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "motion/react";
 import type { FooterContent } from "@/content/site";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
@@ -8,6 +7,7 @@ import { fadeRise, scaleIn } from "@/components/motion/variants";
 import { scrollToAnchor } from "@/lib/hooks/useLenis";
 import { OrbitMark } from "@/components/ui/OrbitMark";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { HERO_PHOTO } from "@/lib/hero-photo";
 import styles from "./Footer.module.css";
 
 interface FooterProps {
@@ -42,37 +42,21 @@ export function Footer({ content }: FooterProps) {
     <footer className={styles.footer}>
       <div className={styles.bg} aria-hidden="true">
         <div className={styles.kenBurns}>
-          <Image
-            src="/2.jpg"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={HERO_PHOTO.src}
+            srcSet={HERO_PHOTO.srcSet}
+            sizes={HERO_PHOTO.sizes}
             alt=""
             aria-hidden="true"
-            fill
-            sizes="100vw"
+            loading="lazy"
+            decoding="async"
             className={styles.bgImage}
           />
         </div>
         <div className={styles.breathe} />
         <GrainOverlay opacity={0.18} />
         <div className={styles.scrim} />
-      </div>
-
-      <div className={styles.top}>
-        <span className={styles.brand}>{content.brand}</span>
-        <nav>
-          <ul className={styles.nav}>
-            {content.navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className={styles.navLink}
-                  onClick={(event) => handleNavClick(event, link.href)}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </div>
 
       <motion.div
@@ -107,6 +91,13 @@ export function Footer({ content }: FooterProps) {
         animate="visible"
         variants={fadeRise(0.1, 8)}
       >
+        <nav className={styles.legalLinks}>
+          {content.legalLinks.map((link) => (
+            <a key={link.href} href={link.href} className={styles.legalLink}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
         <span>{content.copyright}</span>
       </motion.div>
     </footer>

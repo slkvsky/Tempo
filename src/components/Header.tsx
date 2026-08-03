@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import type { HeaderContent } from "@/content/site";
+import { usePathname } from "next/navigation";
+import { siteContent } from "@/content/site";
+import { getLocaleFromPathname } from "@/lib/locale";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { scrollToAnchor } from "@/lib/hooks/useLenis";
 import { maskRise } from "@/components/motion/variants";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import styles from "./Header.module.css";
-
-interface HeaderProps {
-  content: HeaderContent;
-}
 
 /** Past this many px of scroll, the header gets its glass background. */
 const SCROLL_THRESHOLD = 8;
@@ -22,14 +21,35 @@ const SCROLL_THRESHOLD = 8;
  * (the same tone Hero's own CTA used) rather than the orange accent: that
  * color is reserved for the Pricing/Game "buy" moments, and the header is
  * present on every screen, not just the checkout ones.
+ *
+ * Locale-aware without needing props from the (shared, single) root layout:
+ * it reads its own locale off the current pathname, since `/`, `/en/*` and
+ * `/es/*` all render under the same `app/layout.tsx`.
  */
-export function Header({ content }: HeaderProps) {
+export function Header() {
   const reduceMotion = useSafeReducedMotion();
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname ?? "/");
+  const content = siteContent[locale].header;
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
-    onScroll();
+    document.documentElement.lang = locale;
+  }, [locale]);
+
+  useEffect(() => {
+    // Track the last value in a ref so `setState` is only dispatched when the
+    // threshold is actually crossed, rather than on every scroll event.
+    let wasScrolled = window.scrollY > SCROLL_THRESHOLD;
+    setIsScrolled(wasScrolled);
+
+    const onScroll = () => {
+      const next = window.scrollY > SCROLL_THRESHOLD;
+      if (next === wasScrolled) return;
+      wasScrolled = next;
+      setIsScrolled(next);
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -40,6 +60,8 @@ export function Header({ content }: HeaderProps) {
     scrollToAnchor(href);
   };
 
+  const homeHref = locale === "uk" ? "/" : `/${locale}/`;
+
   return (
     <motion.header
       className={styles.header}
@@ -48,7 +70,7 @@ export function Header({ content }: HeaderProps) {
       animate="visible"
       variants={maskRise(0.4, 1, "-100%")}
     >
-      <a href="#" className={styles.brand}>
+      <a href={homeHref} className={styles.brand}>
         {content.brand}
       </a>
 
@@ -68,14 +90,17 @@ export function Header({ content }: HeaderProps) {
         </ul>
       </nav>
 
-      <a
-        href="#final-cta-heading"
-        data-cursor-text="Почати"
-        className={styles.cta}
-        onClick={(event) => handleNavClick(event, "#final-cta-heading")}
-      >
-        {content.cta}
-      </a>
+      <div className={styles.actions}>
+        <LanguageSwitcher locale={locale} />
+        <a
+          href="#quiz-heading"
+          data-cursor-text={content.cursorStart}
+          className={styles.cta}
+          onClick={(event) => handleNavClick(event, "#quiz-heading")}
+        >
+          {content.cta}
+        </a>
+      </div>
     </motion.header>
   );
 }
