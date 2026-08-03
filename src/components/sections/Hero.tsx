@@ -7,7 +7,7 @@ import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { HeroPhotoBackground } from "@/components/ui/HeroPhotoBackground";
 import { OrbitMark } from "@/components/ui/OrbitMark";
 import { MaskedLines } from "@/components/motion/MaskedLines";
-import { maskRise, scaleIn } from "@/components/motion/variants";
+import { maskRise, scaleIn, fadeRise } from "@/components/motion/variants";
 
 interface HeroProps {
   content: HeroContent;
@@ -40,9 +40,6 @@ export function Hero({ content }: HeroProps) {
       style={{ background: "var(--color-bg)" }}
     >
       <HeroPhotoBackground
-        imageSrc="/2.jpg"
-        imageWidth={2560}
-        imageHeight={1440}
         backgroundY={backgroundY}
         overlayOpacity={overlayOpacity}
         grainOpacity={0.18}
@@ -50,8 +47,22 @@ export function Hero({ content }: HeroProps) {
 
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-[100px]"
-        style={{ background: "linear-gradient(180deg, transparent, var(--color-bg))" }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[38%]"
+        style={{
+          /*
+           * A tall, multi-stop ramp rather than a short two-stop one: a plain
+           * `transparent → colour` gradient over 100px reads as a visible edge.
+           * The extra stops approximate an ease-in curve so the photo dissolves
+           * into the section below instead of meeting it at a line.
+           */
+          background: `linear-gradient(180deg,
+            transparent 0%,
+            color-mix(in srgb, var(--color-bg) 12%, transparent) 26%,
+            color-mix(in srgb, var(--color-bg) 34%, transparent) 46%,
+            color-mix(in srgb, var(--color-bg) 62%, transparent) 65%,
+            color-mix(in srgb, var(--color-bg) 86%, transparent) 82%,
+            var(--color-bg) 100%)`,
+        }}
       />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-end px-[var(--layout-margin)] pb-[var(--space-8)]">
@@ -59,14 +70,29 @@ export function Hero({ content }: HeroProps) {
           initial="hidden"
           animate="visible"
           variants={scaleIn(0.15)}
-          className="mb-[var(--space-5)]"
+          className="mb-[var(--space-4)]"
           style={{ width: "var(--size-hero-mark)", color: "var(--color-7)" }}
         >
           <OrbitMark />
         </motion.div>
 
+        <motion.span
+          initial="hidden"
+          animate="visible"
+          variants={fadeRise(0.1)}
+          className="mb-[var(--space-3)] inline-block rounded-[var(--radius-full)] border px-[var(--space-4)] py-[var(--space-1)] text-center font-mono uppercase"
+          style={{
+            fontSize: "var(--text-xs)",
+            letterSpacing: "var(--tracking-wide)",
+            color: "var(--color-7)",
+            borderColor: "var(--color-4)",
+          }}
+        >
+          {content.badge}
+        </motion.span>
+
         <h1
-          className="max-w-[32ch] text-center font-text font-semibold"
+          className="max-w-[42ch] text-center font-text font-semibold"
           style={{
             fontSize: "var(--text-lg)",
             lineHeight: "var(--leading-body)",
@@ -97,7 +123,7 @@ export function Hero({ content }: HeroProps) {
             className="block whitespace-nowrap text-center uppercase"
             style={{
               fontFamily: "var(--font-wordmark)",
-              fontSize: "clamp(6rem, 29vw, 17rem)",
+              fontSize: "clamp(5rem, 22vw, 13rem)",
               letterSpacing: "var(--tracking-tight)",
               lineHeight: "var(--leading-tight)",
               color: "var(--color-7)",

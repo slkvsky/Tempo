@@ -47,8 +47,19 @@
   /* ---------------------------------------------------------------- */
   /* Typography — fluid clamp scale, 1.25 step, 375px → 1440px        */
   /* ---------------------------------------------------------------- */
-  --font-display: "Unbounded", "Arial", sans-serif;
-  --font-text: "Onest", "Arial", sans-serif;
+  /*
+   * --font-display / --font-text are deliberately NOT declared here. Both
+   * are set by next/font/local's generated class on <html> (see
+   * src/app/fonts.ts + layout.tsx) — that's the only source of truth for
+   * the real self-hosted font-family value (a scoped name like
+   * 'fontDisplay, fontDisplay Fallback, Arial, sans-serif'). A literal
+   * fallback string here would collide: :root and the next/font class
+   * have equal specificity, so whichever rule lands later in the compiled
+   * cascade wins outright — silently discarding the real font-face and
+   * falling through to Arial. (This is exactly what happened when Oswald
+   * replaced Unbounded/Onest — the swap looked like a no-op because the
+   * literal string here was overriding it the whole time.)
+   */
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", monospace;
 
   --text-xs: clamp(0.64rem, 0.6118rem + 0.0075vw, 0.72rem);

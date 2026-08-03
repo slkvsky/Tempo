@@ -46,15 +46,28 @@ export function HeroMobile({ content }: HeroMobileProps) {
       style={{ background: "var(--color-bg)" }}
     >
       <HeroPhotoBackground
-        imageSrc="/2.jpg"
-        imageWidth={2560}
-        imageHeight={1440}
         backgroundY={backgroundY}
         overlayOpacity={overlayOpacity}
         grainOpacity={0.09}
       />
 
-      <div className="relative flex flex-1 flex-col items-center justify-center gap-[var(--space-5)] px-[var(--layout-margin)] pt-[var(--space-9)] text-center">
+      {/* Same dissolve into the next section as the desktop hero (which mobile
+          was missing entirely, so the photo met the dark section at a line). */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[32%]"
+        style={{
+          background: `linear-gradient(180deg,
+            transparent 0%,
+            color-mix(in srgb, var(--color-bg) 12%, transparent) 26%,
+            color-mix(in srgb, var(--color-bg) 34%, transparent) 46%,
+            color-mix(in srgb, var(--color-bg) 62%, transparent) 65%,
+            color-mix(in srgb, var(--color-bg) 86%, transparent) 82%,
+            var(--color-bg) 100%)`,
+        }}
+      />
+
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-[var(--space-5)] px-[var(--layout-margin)] pt-[var(--space-9)] text-center">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -63,6 +76,20 @@ export function HeroMobile({ content }: HeroMobileProps) {
         >
           <OrbitMark />
         </motion.div>
+
+        <motion.span
+          initial="hidden"
+          animate="visible"
+          variants={fadeRise(0.05)}
+          className="inline-block rounded-[var(--radius-full)] border px-[var(--space-3)] py-[var(--space-1)] text-center font-mono uppercase"
+          style={{
+            fontSize: "var(--text-xs)",
+            color: "var(--color-7)",
+            borderColor: "var(--color-4)",
+          }}
+        >
+          {content.badge}
+        </motion.span>
 
         <h1
           className="max-w-[26ch] font-text font-semibold"
@@ -86,21 +113,10 @@ export function HeroMobile({ content }: HeroMobileProps) {
             className="mx-auto"
           />
         </h1>
-
-        <motion.a
-          href="#"
-          initial="hidden"
-          animate="visible"
-          variants={fadeRise(0.65)}
-          className="mt-[var(--space-2)] w-full max-w-[24rem] rounded-[var(--radius-full)] bg-[var(--color-9)] px-[var(--space-6)] py-[var(--space-3)] text-[var(--text-base)] font-medium"
-          style={{ color: "var(--color-0)" }}
-        >
-          {content.navCta}
-        </motion.a>
       </div>
 
       <div
-        className="relative overflow-hidden pb-[var(--space-6)]"
+        className="relative z-10 overflow-hidden pb-[var(--space-6)]"
         style={{ width: "100vw", marginInline: "calc(50% - 50vw)" }}
       >
         <motion.span
