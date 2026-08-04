@@ -125,7 +125,17 @@ export function QuizSection({ locale }: QuizSectionProps) {
   const pricing = siteContent[locale].pricing;
   const game = siteContent[locale].game;
   const reduceMotion = useSafeReducedMotion();
-  const { ref: plateRef, isVisible: plateInView } = useSpinWhenVisible<HTMLDivElement>();
+  /*
+   * One IntersectionObserver instead of three: the heading/sub used to have
+   * their own separate Motion `whileInView` triggers, and the plate's sweep
+   * had its own via `useSpinWhenVisible` — three observers firing (and
+   * causing their own React re-renders) within the same scroll frame right
+   * as the section entered view. `viewRef` sits on `.container` (so it
+   * covers the heading/sub too, not just the plate) and now drives all of
+   * it: the heading/sub reveal, the sweep's on-screen gating, and (via
+   * `hasEnteredView` below) the Core's one-time draw-in.
+   */
+  const { ref: viewRef, isVisible: sectionInView } = useSpinWhenVisible<HTMLDivElement>();
   const [hasEnteredView, setHasEnteredView] = useState(false);
   const [canHover, setCanHover] = useState(false);
   const [step, setStep] = useState(0); // 0 = intro, 1-4 = questions, 5 = result
@@ -137,11 +147,11 @@ export function QuizSection({ locale }: QuizSectionProps) {
   const [gameBundleChecked, setGameBundleChecked] = useState(false);
   const hasRestoredRef = useRef(false);
 
-  // Once the plate has been seen, keep the Core's rings drawn in — don't
-  // undraw them if the section scrolls back out of view.
+  // Once the section has been seen, keep the heading/Core's reveal settled
+  // — don't re-hide them if the section scrolls back out of view.
   useEffect(() => {
-    if (plateInView) setHasEnteredView(true);
-  }, [plateInView]);
+    if (sectionInView) setHasEnteredView(true);
+  }, [sectionInView]);
 
   // Gates the step-4 style-card tilt: Motion's `whileHover` binds
   // pointerenter/leave, and on touch a tap fires pointerenter without a
@@ -276,14 +286,12 @@ export function QuizSection({ locale }: QuizSectionProps) {
       <span className={styles.sectionBg} aria-hidden="true" />
       <span className={styles.sectionScrim} aria-hidden="true" />
 
-      <div className={styles.container}>
+      <div ref={viewRef} className={styles.container}>
         <motion.h2
           id="quiz-heading"
           className={styles.heading}
           initial={reduceMotion ? "visible" : "hidden"}
-          animate={reduceMotion ? "visible" : undefined}
-          whileInView={reduceMotion ? undefined : "visible"}
-          viewport={reduceMotion ? undefined : { once: true, amount: 0.4 }}
+          animate={reduceMotion || hasEnteredView ? "visible" : "hidden"}
           variants={fadeRise(0)}
         >
           {quiz.h2}
@@ -291,15 +299,13 @@ export function QuizSection({ locale }: QuizSectionProps) {
         <motion.p
           className={styles.sub}
           initial={reduceMotion ? "visible" : "hidden"}
-          animate={reduceMotion ? "visible" : undefined}
-          whileInView={reduceMotion ? undefined : "visible"}
-          viewport={reduceMotion ? undefined : { once: true, amount: 0.4 }}
+          animate={reduceMotion || hasEnteredView ? "visible" : "hidden"}
           variants={fadeRise(0.08)}
         >
           {quiz.sub}
         </motion.p>
 
-        <div ref={plateRef} className={styles.plate} data-inview={plateInView}>
+        <div className={styles.plate} data-inview={sectionInView}>
           <span className={styles.grid} aria-hidden="true" />
           <span className={styles.ticks} aria-hidden="true" />
           <span
