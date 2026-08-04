@@ -14,8 +14,24 @@ import "./globals.css";
  * mount once it knows which locale it's rendering.
  */
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.tempo.in.ua"),
   title: siteContent.uk.meta.title,
   description: siteContent.uk.meta.description,
+  openGraph: {
+    title: siteContent.uk.meta.title,
+    description: siteContent.uk.meta.description,
+    url: "/",
+    siteName: "Tempo",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    locale: "uk_UA",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteContent.uk.meta.title,
+    description: siteContent.uk.meta.description,
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
