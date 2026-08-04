@@ -1,8 +1,52 @@
 .section {
+  position: relative;
+  overflow: hidden;
   background: var(--color-bg);
 }
 
+/* Same background treatment as GameSection: a full-bleed image faded out
+   top/bottom via a linear mask, dimmed further by a flat scrim so the
+   card and text on top stay legible regardless of what's under them. */
+.sectionBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("/quiz-orbit-bg.webp");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.75;
+  /* Fade zone pulled in close to the section's own edges (was 25%/75% —
+     faded out with a lot of headroom) so the glow reads as reaching toward
+     the neighboring sections rather than stopping well short of them,
+     without actually crossing the section's own clipped boundary. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.sectionScrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: color-mix(in srgb, var(--color-bg) 30%, transparent);
+  pointer-events: none;
+}
+
 .container {
+  position: relative;
+  z-index: 1;
   max-width: 40rem;
   margin-inline: auto;
   text-align: center;
@@ -26,22 +70,205 @@
   margin: var(--space-4) auto 0;
 }
 
-.card {
+/* ------------------------------------------------------------------ */
+/* The plate — a "technical blueprint" frame, deliberately NOT the     */
+/* chamfered/spinning-border HUD skin Pricing and Game already share.  */
+/* Sharp corners, a graph-paper grid, a ruler strip, one travelling    */
+/* light and a perimeter progress stroke instead. `overflow: hidden`   */
+/* is load-bearing: every decorative layer stays clipped to the plate  */
+/* regardless of z-index specifics (same reasoning as the stacking fix */
+/* applied to PricingSection/FinalCtaSection).                         */
+/* ------------------------------------------------------------------ */
+
+.plate {
   position: relative;
+  overflow: hidden;
   margin: var(--space-8) 0 0;
   background: var(--color-1);
   border: 1px solid var(--color-3);
-  border-radius: var(--radius-lg);
-  padding: var(--space-7) var(--space-6);
+  padding: var(--space-6) var(--space-6) var(--space-7);
   text-align: left;
-  overflow: hidden;
+  min-height: clamp(25rem, 21rem + 12vw, 31rem);
+  display: flex;
+  flex-direction: column;
 }
 
-.progressRow {
+/* Lift every direct child above the decorative background layers by
+   default; the layers themselves re-declare z-index: 0 below (same
+   specificity, later in the cascade, so they win back down). */
+.plate > * {
+  position: relative;
+  z-index: 1;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-9) 4%, transparent) 0 1px,
+      transparent 1px 1.5rem
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-9) 4%, transparent) 0 1px,
+      transparent 1px 1.5rem
+    );
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, black 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.ticks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.55rem;
+  z-index: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-4) 0 1px,
+    transparent 1px 0.75rem
+  );
+  mask-image: linear-gradient(to bottom, black, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.innerFrame {
+  position: absolute;
+  inset: var(--space-3);
+  z-index: 2;
+  border: 1px solid color-mix(in srgb, var(--color-3) 70%, transparent);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .innerFrame[data-complete="true"] {
+    animation: framePulse var(--duration-slow) var(--ease-out);
+  }
+}
+
+@keyframes framePulse {
+  0%,
+  100% {
+    border-color: color-mix(in srgb, var(--color-3) 70%, transparent);
+  }
+  40% {
+    border-color: var(--color-accent);
+  }
+}
+
+/* A single 1px light sweeping the top edge — transform-only, gated on
+   visibility via `useSpinWhenVisible` (repurposed from its original
+   conic-spin job: it's just "an element is in view" plumbing). */
+.sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sweep::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  transform: translateX(-110%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .plate[data-inview="true"] .sweep::after {
+    animation: quizSweep var(--duration-reveal) var(--ease-in-out) infinite;
+  }
+}
+
+@keyframes quizSweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  60%,
+  100% {
+    transform: translateX(340%);
+  }
+}
+
+/*
+ * Progress, drawn as the plate's own perimeter rather than a bar — one edge
+ * per question, filling clockwise from the top as each is answered. (An
+ * earlier version tried a single SVG `<path>` traced via
+ * stroke-dasharray/dashoffset with `vector-effect: non-scaling-stroke`; the
+ * plate's aspect ratio makes `preserveAspectRatio="none"` scale x/y
+ * non-uniformly, and Motion applies the dash values in `px` — a unit that,
+ * combined with non-scaling-stroke under that anisotropic scale, doesn't
+ * correspond to the path's actual user-space length. Four plain CSS edges
+ * with a `scale` transform sidesteps all of it, and reuses the exact
+ * technique TestimonialsSection's segmented progress bar already proves out.)
+ */
+.rail {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.railEdge {
+  position: absolute;
+  background: var(--color-accent);
+  box-shadow: 0 0 4px var(--color-accent-soft);
+}
+
+.railTop {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform-origin: left center;
+}
+
+.railRight {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  transform-origin: top center;
+}
+
+.railBottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform-origin: right center;
+}
+
+.railLeft {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 2px;
+  transform-origin: bottom center;
+}
+
+.headerRail {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
   margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-3);
 }
 
 .backBtn {
@@ -66,12 +293,37 @@
   color: var(--color-5);
 }
 
+/* ------------------------------------------------------------------ */
+/* Step viewport + content                                            */
+/* ------------------------------------------------------------------ */
+
+.stepViewport {
+  flex: 1;
+  display: flex;
+  perspective: 1100px;
+  perspective-origin: 50% 45%;
+}
+
 .step {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: var(--space-4);
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Intro is just one line + a button — sparse enough that top-aligning it
+   (like every other, denser step) leaves a lot of empty plate below. Only
+   this step gets centered; the rest keep their current top alignment.
+   `padding-bottom` biases the centered block upward a bit (not a `transform`
+   nudge — Motion drives this element's own `transform` for the step
+   slide/rotate animation via inline style, which would just overwrite one
+   set in CSS). */
+.introStep {
+  justify-content: center;
+  padding-bottom: var(--space-8);
 }
 
 .introText {
@@ -97,6 +349,226 @@
   margin: calc(var(--space-4) * -1) 0 0;
 }
 
+/* ------------------------------------------------------------------ */
+/* The Core — a live, animated OrbitMark. Rings draw in, spin gently,  */
+/* then snap to accent + lock as each question gets answered.         */
+/* ------------------------------------------------------------------ */
+
+.core {
+  position: relative;
+  align-self: center;
+  width: clamp(2.75rem, 2.25rem + 2vw, 3.75rem);
+  color: var(--color-4);
+  margin: 0 0 var(--space-1);
+}
+
+.coreMark {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+}
+
+.coreGlow {
+  position: absolute;
+  inset: -50%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-accent-soft), transparent 65%);
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out-soft);
+  pointer-events: none;
+}
+
+.core[data-complete="true"] .coreGlow {
+  opacity: 1;
+}
+
+/*
+ * Three structurally-identical keyframes rather than one shared name: a CSS
+ * animation only (re)starts when `animation-name` changes to/from `none` or
+ * to a *different* name — reusing one name across data-locked="1"→"2"→"3"
+ * would silently no-op on the 2nd/3rd lock, since the property value never
+ * actually changes from the browser's point of view.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .core[data-locked="1"] {
+    animation: corePulse1 var(--duration-fast) var(--ease-out);
+  }
+
+  .core[data-locked="2"] {
+    animation: corePulse2 var(--duration-fast) var(--ease-out);
+  }
+
+  .core[data-locked="3"] {
+    animation: corePulse3 var(--duration-fast) var(--ease-out);
+  }
+
+  .core[data-complete="true"] {
+    animation: coreComplete var(--duration-slower) var(--ease-out);
+  }
+}
+
+@keyframes corePulse1 {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+@keyframes corePulse2 {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+@keyframes corePulse3 {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+@keyframes coreComplete {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.22);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.core ellipse {
+  transform-box: fill-box;
+  transform-origin: center;
+  stroke-dasharray: 104;
+  stroke-dashoffset: 104;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .core[data-ready="true"] ellipse:nth-of-type(1) {
+    animation:
+      coreDraw var(--duration-slow) var(--ease-out) forwards,
+      coreSpinA 11s linear var(--duration-slow) infinite;
+  }
+
+  .core[data-ready="true"] ellipse:nth-of-type(2) {
+    animation:
+      coreDraw var(--duration-slow) var(--ease-out) var(--stagger-tight) forwards,
+      coreSpinB 15s linear calc(var(--duration-slow) + var(--stagger-tight)) infinite reverse;
+  }
+
+  .core[data-ready="true"] ellipse:nth-of-type(3) {
+    animation:
+      coreDraw var(--duration-slow) var(--ease-out) calc(var(--stagger-tight) * 2) forwards,
+      coreSpinC 19s linear calc(var(--duration-slow) + var(--stagger-tight) * 2) infinite;
+  }
+}
+
+.core[data-ready="true"]:not([data-complete="true"]) ellipse {
+  stroke-dashoffset: 0;
+}
+
+@keyframes coreDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes coreSpinA {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes coreSpinB {
+  from {
+    transform: rotate(60deg);
+  }
+  to {
+    transform: rotate(420deg);
+  }
+}
+
+@keyframes coreSpinC {
+  from {
+    transform: rotate(120deg);
+  }
+  to {
+    transform: rotate(480deg);
+  }
+}
+
+/* Locking: ring snaps to its rest angle and turns accent-colored.
+   `nth-of-type(-n + 2)` selects rings 1 and 2 together for `data-locked="2"`. */
+.core[data-locked="1"] ellipse:nth-of-type(1),
+.core[data-locked="2"] ellipse:nth-of-type(-n + 2),
+.core[data-locked="3"] ellipse,
+.core[data-locked="4"] ellipse {
+  stroke: var(--color-accent);
+  stroke-dashoffset: 0;
+  animation: coreLock var(--duration-fast) var(--ease-out) forwards;
+}
+
+.core[data-locked="1"] ellipse:nth-of-type(1) {
+  transform: rotate(0deg);
+}
+
+.core[data-locked="2"] ellipse:nth-of-type(1) {
+  transform: rotate(0deg);
+}
+
+.core[data-locked="2"] ellipse:nth-of-type(2) {
+  transform: rotate(60deg);
+}
+
+.core[data-locked="3"] ellipse:nth-of-type(1),
+.core[data-locked="4"] ellipse:nth-of-type(1) {
+  transform: rotate(0deg);
+}
+
+.core[data-locked="3"] ellipse:nth-of-type(2),
+.core[data-locked="4"] ellipse:nth-of-type(2) {
+  transform: rotate(60deg);
+}
+
+.core[data-locked="3"] ellipse:nth-of-type(3),
+.core[data-locked="4"] ellipse:nth-of-type(3) {
+  transform: rotate(120deg);
+}
+
+@keyframes coreLock {
+  0% {
+    stroke-width: 1.1;
+  }
+  45% {
+    stroke-width: 2.6;
+  }
+  100% {
+    stroke-width: 1.6;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Chips (step 1)                                                      */
+/* ------------------------------------------------------------------ */
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -105,6 +577,7 @@
 }
 
 .chip {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -118,16 +591,77 @@
   border-radius: var(--radius-full);
   cursor: pointer;
   transition:
-    background-color var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out);
+    background-color var(--duration-fast) var(--ease-out-soft),
+    border-color var(--duration-fast) var(--ease-out-soft),
+    color var(--duration-fast) var(--ease-out-soft);
 }
 
 .chip[data-selected="true"] {
-  background: var(--color-pricing-accent-soft);
-  border-color: var(--color-pricing-accent);
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
   color: var(--color-text);
 }
+
+/* CSS rather than a Motion `animate` prop: `data-selected` is a real
+   boolean toggle (unlike the Core's monotonic lock count), so a plain
+   attribute-selector animation retriggers correctly on every select. Using
+   Motion's `animate` here instead would fight the entrance `variants`
+   already driving the same element via stagger propagation. */
+@media (prefers-reduced-motion: no-preference) {
+  .chip[data-selected="true"] {
+    animation: chipSelect var(--duration-fast) var(--ease-out);
+  }
+}
+
+@keyframes chipSelect {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* Same "lift real content, then override the decorative layer back down"
+   trick as `.plate` — a plain (non-negative) z-index child still paints
+   ambiguously relative to a sibling *text node* per the CSS2.1 painting
+   order (inline content vs. z-index:0 positioned content), so the label
+   needs an explicit z-index too, not just the ripple. */
+.chip > * {
+  position: relative;
+  z-index: 1;
+}
+
+.chipRipple {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-accent);
+  pointer-events: none;
+}
+
+.chipCheck {
+  position: absolute;
+  top: -0.35rem;
+  right: -0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-0);
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Single-select option rows (steps 2 & 3) — a shared `layoutId`       */
+/* highlight travels between rows instead of each button re-painting.  */
+/* ------------------------------------------------------------------ */
 
 .optionList {
   display: flex;
@@ -137,6 +671,7 @@
 }
 
 .optionBtn {
+  position: relative;
   min-height: 2.75rem;
   padding: var(--space-3) var(--space-5);
   text-align: left;
@@ -147,56 +682,90 @@
   border: 1px solid var(--color-3);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition:
-    background-color var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out);
+  transition: color var(--duration-fast) var(--ease-out-soft);
 }
 
 .optionBtn[data-selected="true"] {
-  background: var(--color-pricing-accent-soft);
-  border-color: var(--color-pricing-accent);
   color: var(--color-text);
 }
+
+.optionBtn > * {
+  position: relative;
+  z-index: 1;
+}
+
+.optionHighlight {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+}
+
+/* ------------------------------------------------------------------ */
+/* Style grid (step 4)                                                 */
+/* ------------------------------------------------------------------ */
 
 .styleGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-2);
   width: 100%;
+  perspective: 900px;
 }
 
 .stylePreview {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-3);
+  padding: var(--space-2);
   background: var(--color-2);
   border: 1px solid var(--color-3);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: border-color var(--duration-fast) var(--ease-out);
 }
 
-.stylePreview[data-selected="true"] {
-  border-color: var(--color-pricing-accent);
+.stylePreview > * {
+  position: relative;
+  z-index: 1;
 }
 
+.styleRing {
+  position: absolute;
+  inset: -2px;
+  z-index: 0;
+  border: 1px solid var(--color-accent);
+  border-radius: calc(var(--radius-md) + 2px);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+  pointer-events: none;
+}
+
+/*
+ * A small fixed-size chip rather than a full-width preview card: at
+ * card-width (2 columns) an aspect-ratio swatch tall enough to read as a
+ * "design preview" made this step roughly 2x taller than every other step
+ * in the quiz (measured: 810px vs. 444px), a jarring height jump on its own
+ * before a background image would make it worse. Row layout + a small fixed
+ * swatch keeps step 4 within the same height budget as steps 1-3.
+ */
 .styleSwatch {
   position: relative;
   display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
 .styleSwatchAccent {
   position: absolute;
-  inset: auto var(--space-2) var(--space-2) auto;
-  width: 30%;
-  height: 30%;
+  inset: auto 0.2rem 0.2rem auto;
+  width: 45%;
+  height: 45%;
   border-radius: 50%;
 }
 
@@ -205,6 +774,10 @@
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
 }
+
+/* ------------------------------------------------------------------ */
+/* Buttons                                                              */
+/* ------------------------------------------------------------------ */
 
 .primaryBtn {
   display: inline-flex;
@@ -217,7 +790,7 @@
   font-size: var(--text-base);
   font-weight: 600;
   color: var(--color-0);
-  background: var(--color-pricing-accent);
+  background: var(--color-accent);
   border: none;
   border-radius: var(--radius-full);
   text-decoration: none;
@@ -226,7 +799,7 @@
 }
 
 .primaryBtn:hover {
-  background: var(--color-pricing-accent-strong);
+  background: var(--color-accent-strong);
 }
 
 .primaryBtn:disabled {
@@ -266,14 +839,39 @@
   color: var(--color-7);
 }
 
+/* ------------------------------------------------------------------ */
+/* Result screen                                                       */
+/* ------------------------------------------------------------------ */
+
 .resultTitle {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
+  /*
+   * globals.css sets `line-height: var(--leading-tight)` (0.9 — shorter
+   * than the font's own em box) on every h1-h4 by default. That's fine for
+   * plain headings, but MaskedLines wraps this text in an `overflow:
+   * hidden` mask sized to exactly one line box, and 0.9 clips Cyrillic
+   * descenders (й, р, б, з...) at the bottom. Same override Hero's
+   * MaskedLines headline already needs, for the same reason.
+   */
+  line-height: var(--leading-body);
   letter-spacing: var(--tracking-tight);
   color: var(--color-text);
   margin: 0;
 }
 
+.configLabelWrap {
+  overflow: hidden;
+}
+
+/*
+ * The config summary reads like a system printout — mono, a `>` prompt in
+ * the accent color, revealed with a wipe rather than a plain fade.
+ * Deliberately plain inline text (not flex + gap): the label can wrap to
+ * two lines on narrow viewports, and a flex `::before` item doesn't wrap
+ * *with* the text the way normal inline content does — it ends up floating
+ * off to the side instead of staying attached to the first line.
+ */
 .configLabel {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -281,6 +879,11 @@
   text-transform: uppercase;
   color: var(--color-5);
   margin: 0;
+}
+
+.configLabel::before {
+  content: "> ";
+  color: var(--color-accent);
 }
 
 .recommendation {
@@ -307,7 +910,7 @@
   width: 100%;
   padding: var(--space-4);
   background: var(--color-2);
-  border: 1px solid var(--color-pricing-accent-soft);
+  border: 1px solid var(--color-accent-soft);
   border-radius: var(--radius-md);
 }
 
@@ -324,15 +927,24 @@
 .checkboxRow input {
   width: 1.125rem;
   height: 1.125rem;
-  accent-color: var(--color-pricing-accent);
+  accent-color: var(--color-accent);
 }
 
 @media (max-width: 560px) {
-  .card {
-    padding: var(--space-6) var(--space-5);
+  .plate {
+    padding: var(--space-5) var(--space-4) var(--space-6);
+    min-height: 0;
   }
 
-  .styleGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .innerFrame {
+    inset: var(--space-2);
+  }
+
+  .ticks {
+    display: none;
+  }
+
+  .core {
+    width: 2.5rem;
   }
 }
