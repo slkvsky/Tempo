@@ -116,8 +116,18 @@
       color-mix(in srgb, var(--color-9) 4%, transparent) 0 1px,
       transparent 1px 1.5rem
     );
-  mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, black 0%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, black 0%, transparent 100%);
+  /* A linear fade (matching .sectionBg/.ticks below), not the radial one
+     this used previously — radial masks force an extra, more expensive
+     compositor pass, and at this opacity (4%) the difference is not
+     visible enough to be worth it, especially on weaker GPUs. */
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 30%,
+    black 75%,
+    transparent 100%
+  );
   pointer-events: none;
 }
 
