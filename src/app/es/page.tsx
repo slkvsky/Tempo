@@ -19,6 +19,21 @@ const content = siteContent[locale];
 export const metadata: Metadata = {
   title: content.meta.title,
   description: content.meta.description,
+  openGraph: {
+    title: content.meta.title,
+    description: content.meta.description,
+    url: "/es",
+    siteName: "Tempo",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: content.meta.title,
+    description: content.meta.description,
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function HomeEs() {
