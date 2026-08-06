@@ -69,3 +69,76 @@
 .paragraph:last-child {
   margin-bottom: 0;
 }
+
+.list {
+  font-family: var(--font-text);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-3);
+  padding-inline-start: 1.25em;
+}
+
+.list:last-child {
+  margin-bottom: 0;
+}
+
+.list li + li {
+  margin-top: var(--space-2);
+}
+
+.note {
+  font-family: var(--font-text);
+  font-style: italic;
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-3);
+}
+
+.note:last-child {
+  margin-bottom: 0;
+}
+
+.tableWrap {
+  margin: 0 0 var(--space-3);
+  overflow-x: auto;
+  border: 1px solid var(--color-3);
+}
+
+.tableWrap:last-child {
+  margin-bottom: 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+.table th,
+.table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-3);
+}
+
+.table th {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: var(--tracking-snug);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.table td {
+  color: var(--color-text-secondary);
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
