@@ -10,6 +10,7 @@ import { CountUp } from "@/components/motion/CountUp";
 import { Currency } from "@/components/ui/Currency";
 import { stagger } from "@/lib/motion-tokens";
 import { formatPrice } from "@/lib/format-price";
+import { paymentLinks } from "@/content/payment-links";
 import styles from "./PricingSection.module.css";
 
 interface PricingSectionProps {
@@ -80,7 +81,10 @@ function TierCard({
         ))}
       </ul>
 
-      <a href="#" className={`${styles.cta} ${highlighted ? styles.ctaHighlighted : ""}`}>
+      <a
+        href={paymentLinks.tariff[tier.id] ?? "#"}
+        className={`${styles.cta} ${highlighted ? styles.ctaHighlighted : ""}`}
+      >
         {tier.cta}
       </a>
     </motion.li>

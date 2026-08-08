@@ -14,6 +14,7 @@ import { CountUp } from "@/components/motion/CountUp";
 import { Currency } from "@/components/ui/Currency";
 import { duration, stagger, ease } from "@/lib/motion-tokens";
 import { formatPrice } from "@/lib/format-price";
+import { paymentLinks } from "@/content/payment-links";
 import styles from "./GameSection.module.css";
 
 interface GameSectionProps {
@@ -234,7 +235,7 @@ export function GameSection({ locale }: GameSectionProps) {
             </span>
           </div>
 
-          <a href="#" className={styles.cta}>
+          <a href={paymentLinks.game ?? "#"} className={styles.cta}>
             {content.cta}
           </a>
 
