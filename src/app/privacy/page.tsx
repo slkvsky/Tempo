@@ -12,12 +12,6 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalPage
-      doc={doc}
-      backHref="/"
-      backLabel={ui.back}
-      updatedLabel={ui.updated}
-      permalinkLabel={ui.permalink}
-    />
+    <LegalPage doc={doc} backHref="/" backLabel={ui.back} updatedLabel={ui.updated} />
   );
 }

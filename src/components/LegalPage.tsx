@@ -7,7 +7,6 @@ interface LegalPageProps {
   backHref: string;
   backLabel: string;
   updatedLabel: string;
-  permalinkLabel?: string;
 }
 
 function LegalBlockView({ block }: { block: LegalBlock }) {
@@ -51,7 +50,7 @@ function LegalBlockView({ block }: { block: LegalBlock }) {
 }
 
 /** Plain, static rendering for the legal documents — no motion needed here. */
-export function LegalPage({ doc, backHref, backLabel, updatedLabel, permalinkLabel }: LegalPageProps) {
+export function LegalPage({ doc, backHref, backLabel, updatedLabel }: LegalPageProps) {
   return (
     <main
       className={styles.main}
@@ -69,11 +68,6 @@ export function LegalPage({ doc, backHref, backLabel, updatedLabel, permalinkLab
         <p className={styles.updated}>
           {updatedLabel} {doc.updated}
         </p>
-        {doc.permalink && permalinkLabel && (
-          <p className={styles.updated}>
-            {permalinkLabel} {doc.permalink}
-          </p>
-        )}
         {doc.intro && <p className={styles.intro}>{doc.intro}</p>}
 
         {doc.sections.map((section) => (

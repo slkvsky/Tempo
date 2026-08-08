@@ -1,10 +1,10 @@
 /**
  * Draft legal documents (oferta, privacy policy). These are drafts, not
  * legal advice — a lawyer should review them before publishing, especially
- * for EU sales. Placeholders still open: contact e-mail, the ЄДР
- * registration record number, and the effective/redaction date for both
- * documents. The English and Spanish versions are translations of the same
- * draft and need the same legal review.
+ * for EU sales. Placeholders still open: contact e-mail and the ЄДР
+ * registration record number for the oferta. The English and Spanish
+ * versions are translations of the same draft and need the same legal
+ * review.
  */
 import type { Locale } from "@/lib/locale";
 
@@ -22,15 +22,14 @@ export interface LegalSection {
 export interface LegalDoc {
   title: string;
   updated: string;
-  permalink?: string;
   intro?: string;
   sections: readonly LegalSection[];
 }
 
-export const legalUi: Record<Locale, { back: string; updated: string; permalink: string }> = {
-  uk: { back: "← На головну", updated: "Дата оновлення:", permalink: "Постійна адреса:" },
-  en: { back: "← Back to home", updated: "Last updated:", permalink: "Permanent address:" },
-  es: { back: "← Volver al inicio", updated: "Última actualización:", permalink: "Dirección permanente:" },
+export const legalUi: Record<Locale, { back: string; updated: string }> = {
+  uk: { back: "← На головну", updated: "Дата оновлення:" },
+  en: { back: "← Back to home", updated: "Last updated:" },
+  es: { back: "← Volver al inicio", updated: "Última actualización:" },
 };
 
 export const oferta: Record<Locale, LegalDoc> = {
@@ -384,15 +383,14 @@ export const oferta: Record<Locale, LegalDoc> = {
 export const privacyPolicy: Record<Locale, LegalDoc> = {
   uk: {
     title: "Політика конфіденційності",
-    updated: "[___]",
-    permalink: "tempo.in.ua/policy/privacy/v1",
+    updated: "09.08.2026",
     sections: [
       {
         heading: "1. Хто обробляє ваші дані",
         blocks: [
           {
             type: "p",
-            text: "Володільцем персональних даних є ФОП Ломака Олександр Сергійович, РНОКПП 3712001990, запис в ЄДР № [___] від [___], адреса: Київ, Україна, e-mail: [___] (далі — «ми», «Продавець»).",
+            text: "Володільцем персональних даних є ФОП Ломака Олександр Сергійович, РНОКПП 3712001990, запис в ЄДР № 265126138813, адреса: Київ, Україна, e-mail: tempohelp@proton.me (далі — «ми», «Продавець»).",
           },
           {
             type: "p",
@@ -532,7 +530,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
           },
           {
             type: "p",
-            text: "Як скористатися: напишіть на [___] з адреси, вказаної при замовленні. Відповімо протягом 10 робочих днів, у складних випадках — до 30 днів із попереднім повідомленням.",
+            text: "Як скористатися: напишіть на tempohelp@proton.me з адреси, вказаної при замовленні. Відповімо протягом 10 робочих днів, у складних випадках — до 30 днів із попереднім повідомленням.",
           },
           {
             type: "p",
@@ -580,7 +578,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
         blocks: [
           {
             type: "p",
-            text: "Ми можемо оновлювати цю Політику. Кожна редакція публікується за постійною адресою з окремим номером версії; попередні редакції залишаються доступними. Про істотні зміни повідомляємо на електронну пошту не пізніше ніж за 30 днів.",
+            text: "Ми можемо оновлювати цю Політику; актуальна редакція завжди доступна на цій сторінці. Про істотні зміни повідомляємо на електронну пошту не пізніше ніж за 30 днів.",
           },
         ],
       },
@@ -588,7 +586,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
         heading: "11. Контакти",
         blocks: [
           { type: "p", text: "ФОП Ломака Олександр Сергійович" },
-          { type: "p", text: "E-mail: [___]" },
+          { type: "p", text: "E-mail: tempohelp@proton.me" },
           { type: "p", text: "Telegram: @tempo_help" },
           { type: "p", text: "Адреса: Київ, Україна" },
           {
@@ -601,15 +599,14 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
   },
   en: {
     title: "Privacy Policy",
-    updated: "[___]",
-    permalink: "tempo.in.ua/policy/privacy/v1",
+    updated: "August 9, 2026",
     sections: [
       {
         heading: "1. Who processes your data",
         blocks: [
           {
             type: "p",
-            text: "The data controller is Sole Proprietor Oleksandr Lomaka, Tax ID 3712001990, state register record No. [___] dated [___], address: Kyiv, Ukraine, e-mail: [___] (\"we\", \"Seller\").",
+            text: "The data controller is Sole Proprietor Oleksandr Lomaka, Tax ID 3712001990, state register record No. 265126138813, address: Kyiv, Ukraine, e-mail: tempohelp@proton.me (\"we\", \"Seller\").",
           },
           {
             type: "p",
@@ -746,7 +743,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
           },
           {
             type: "p",
-            text: "How to exercise these rights: write to [___] from the address you used when ordering. We respond within 10 business days, or up to 30 days in complex cases, with prior notice.",
+            text: "How to exercise these rights: write to tempohelp@proton.me from the address you used when ordering. We respond within 10 business days, or up to 30 days in complex cases, with prior notice.",
           },
           {
             type: "p",
@@ -794,7 +791,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
         blocks: [
           {
             type: "p",
-            text: "We may update this Policy. Each version is published at the permanent address with its own version number; previous versions remain available. We notify you of material changes by e-mail no later than 30 days in advance.",
+            text: "We may update this Policy; the current version is always available on this page. We notify you of material changes by e-mail no later than 30 days in advance.",
           },
         ],
       },
@@ -802,7 +799,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
         heading: "11. Contact",
         blocks: [
           { type: "p", text: "Sole Proprietor Oleksandr Lomaka" },
-          { type: "p", text: "E-mail: [___]" },
+          { type: "p", text: "E-mail: tempohelp@proton.me" },
           { type: "p", text: "Telegram: @tempo_help" },
           { type: "p", text: "Address: Kyiv, Ukraine" },
           {
@@ -815,15 +812,14 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
   },
   es: {
     title: "Política de privacidad",
-    updated: "[___]",
-    permalink: "tempo.in.ua/policy/privacy/v1",
+    updated: "9 de agosto de 2026",
     sections: [
       {
         heading: "1. Quién trata tus datos",
         blocks: [
           {
             type: "p",
-            text: "El responsable de los datos personales es Oleksandr Lomaka, empresario individual (ФОП), NIF/CIF 3712001990, registro estatal n.º [___] de fecha [___], dirección: Kiev, Ucrania, e-mail: [___] (en adelante, «nosotros», «Vendedor»).",
+            text: "El responsable de los datos personales es Oleksandr Lomaka, empresario individual (ФОП), NIF/CIF 3712001990, registro estatal n.º 265126138813, dirección: Kiev, Ucrania, e-mail: tempohelp@proton.me (en adelante, «nosotros», «Vendedor»).",
           },
           {
             type: "p",
@@ -963,7 +959,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
           },
           {
             type: "p",
-            text: "Cómo ejercerlos: escríbenos a [___] desde la dirección que usaste al hacer el pedido. Responderemos en un plazo de 10 días hábiles, o hasta 30 días en casos complejos, con aviso previo.",
+            text: "Cómo ejercerlos: escríbenos a tempohelp@proton.me desde la dirección que usaste al hacer el pedido. Responderemos en un plazo de 10 días hábiles, o hasta 30 días en casos complejos, con aviso previo.",
           },
           {
             type: "p",
@@ -1011,7 +1007,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
         blocks: [
           {
             type: "p",
-            text: "Podemos actualizar esta Política. Cada versión se publica en la dirección permanente con su propio número de versión; las versiones anteriores permanecen disponibles. Te notificaremos los cambios sustanciales por correo electrónico con una antelación mínima de 30 días.",
+            text: "Podemos actualizar esta Política; la versión vigente siempre está disponible en esta página. Te notificaremos los cambios sustanciales por correo electrónico con una antelación mínima de 30 días.",
           },
         ],
       },
@@ -1019,7 +1015,7 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
         heading: "11. Contacto",
         blocks: [
           { type: "p", text: "Oleksandr Lomaka, empresario individual (ФОП)" },
-          { type: "p", text: "E-mail: [___]" },
+          { type: "p", text: "E-mail: tempohelp@proton.me" },
           { type: "p", text: "Telegram: @tempo_help" },
           { type: "p", text: "Dirección: Kiev, Ucrania" },
           {
@@ -1031,3 +1027,4 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
     ],
   },
 };
+
