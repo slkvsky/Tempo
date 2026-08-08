@@ -1,17 +1,22 @@
 /**
- * Draft legal documents (oferta, privacy policy), sourced from
- * tempo-legal-docs.docx. These are drafts, not legal advice — before
- * publishing, the seller's real details (ФОП name, РНОКПП, address, email,
- * domain) need to replace the [___] placeholders below, and a lawyer
- * should review them (the source doc flags this explicitly, especially
- * for EU sales). The English and Spanish versions are translations of the
- * same draft and need the same legal review before publishing.
+ * Draft legal documents (oferta, privacy policy). These are drafts, not
+ * legal advice — a lawyer should review them before publishing, especially
+ * for EU sales. Placeholders still open: contact e-mail and the ЄДР
+ * registration record number for the oferta. The English and Spanish
+ * versions are translations of the same draft and need the same legal
+ * review.
  */
 import type { Locale } from "@/lib/locale";
 
+export type LegalBlock =
+  | { type: "p"; text: string }
+  | { type: "list"; items: readonly string[] }
+  | { type: "table"; headers: readonly string[]; rows: readonly (readonly string[])[] }
+  | { type: "note"; text: string };
+
 export interface LegalSection {
   heading: string;
-  paragraphs: readonly string[];
+  blocks: readonly LegalBlock[];
 }
 
 export interface LegalDoc {
@@ -34,64 +39,112 @@ export const oferta: Record<Locale, LegalDoc> = {
     sections: [
       {
         heading: "1. Загальні положення",
-        paragraphs: [
-          "1.1. Ця публічна оферта (далі — «Оферта») є офіційною пропозицією ФОП [ПІБ], РНОКПП [___], (далі — «Продавець») укласти договір купівлі-продажу цифрових товарів, розміщених на сайті [домен] (далі — «Сайт»).",
-          "1.2. Акцептом Оферти є оплата Товару. Оплачуючи Товар, Покупець підтверджує, що ознайомився з умовами Оферти та Політикою конфіденційності і приймає їх у повному обсязі.",
+        blocks: [
+          {
+            type: "p",
+            text: "1.1. Ця публічна оферта (далі — «Оферта») є офіційною пропозицією ФОП Ломака Олександр Сергійович, РНОКПП 3712001990, (далі — «Продавець») укласти договір купівлі-продажу цифрових товарів, розміщених на сайті tempo.in.ua (далі — «Сайт»).",
+          },
+          {
+            type: "p",
+            text: "1.2. Акцептом Оферти є оплата Товару. Оплачуючи Товар, Покупець підтверджує, що ознайомився з умовами Оферти та Політикою конфіденційності і приймає їх у повному обсязі.",
+          },
         ],
       },
       {
         heading: "2. Предмет договору",
-        paragraphs: [
-          "2.1. Товар — цифрові продукти: (а) електронні планери у форматі файлів Excel із налаштованими формулами, графіками та дизайном (тарифи «Старт», «Система», «Premium»); (б) доступ до веб-застосунку «Tempo Game» у статусі раннього доступу (бета).",
-          "2.2. Товар є результатом інтелектуальної діяльності Продавця та надається для особистого некомерційного використання.",
+        blocks: [
+          {
+            type: "p",
+            text: "2.1. Товар — цифрові продукти: (а) електронні планери у форматі файлів Excel із налаштованими формулами, графіками та дизайном (тарифи «Старт», «Система», «Premium»); (б) доступ до веб-застосунку «Tempo Game» у статусі раннього доступу (бета).",
+          },
+          {
+            type: "p",
+            text: "2.2. Товар є результатом інтелектуальної діяльності Продавця та надається для особистого некомерційного використання.",
+          },
         ],
       },
       {
         heading: "3. Ціна та оплата",
-        paragraphs: [
-          "3.1. Ціни вказані на Сайті. Продавець має право змінювати ціни; для Покупця діє ціна на момент оплати. Акційні ціни діють протягом строку, зазначеного на Сайті.",
-          "3.2. Оплата здійснюється через платіжний сервіс WayForPay [та/або інший провайдер]. Продавець не отримує та не зберігає дані платіжних карток.",
-          "3.3. Платіж є разовим. Підписки та автоматичні списання відсутні.",
+        blocks: [
+          {
+            type: "p",
+            text: "3.1. Ціни вказані на Сайті. Продавець має право змінювати ціни; для Покупця діє ціна на момент оплати. Акційні ціни діють протягом строку, зазначеного на Сайті.",
+          },
+          {
+            type: "p",
+            text: "3.2. Оплата здійснюється через платіжний сервіс WayForPay [та/або інший провайдер]. Продавець не отримує та не зберігає дані платіжних карток.",
+          },
+          { type: "p", text: "3.3. Платіж є разовим. Підписки та автоматичні списання відсутні." },
         ],
       },
       {
         heading: "4. Доставка",
-        paragraphs: [
-          "4.1. Товар надсилається на email, вказаний Покупцем під час оплати, протягом 24 годин з моменту оплати (зазвичай — протягом кількох хвилин).",
-          "4.2. Якщо лист не надійшов, Покупець звертається до підтримки: Telegram [@tempo_help] або email [___]. Продавець повторно надсилає Товар.",
+        blocks: [
+          {
+            type: "p",
+            text: "4.1. Товар надсилається на email, вказаний Покупцем під час оплати, протягом 24 годин з моменту оплати (зазвичай — протягом кількох хвилин).",
+          },
+          {
+            type: "p",
+            text: "4.2. Якщо лист не надійшов, Покупець звертається до підтримки: Telegram @tempo_help або email [___]. Продавець повторно надсилає Товар.",
+          },
         ],
       },
       {
         heading: "5. Tempo Game (ранній доступ)",
-        paragraphs: [
-          "5.1. Застосунок «Tempo Game» надається у статусі «бета / ранній доступ»: повна функціональність доступна на компʼютері; мобільні версії перебувають у розробці. Оновлення надаються Покупцеві безкоштовно.",
-          "5.2. Продавець докладає розумних зусиль для розвитку застосунку, але не гарантує конкретних строків виходу окремих функцій.",
+        blocks: [
+          {
+            type: "p",
+            text: "5.1. Застосунок «Tempo Game» надається у статусі «бета / ранній доступ»: повна функціональність доступна на компʼютері; мобільні версії перебувають у розробці. Оновлення надаються Покупцеві безкоштовно.",
+          },
+          {
+            type: "p",
+            text: "5.2. Продавець докладає розумних зусиль для розвитку застосунку, але не гарантує конкретних строків виходу окремих функцій.",
+          },
         ],
       },
       {
         heading: "6. Інтелектуальна власність",
-        paragraphs: [
-          "6.1. Придбання Товару надає Покупцеві невиключну ліцензію на особисте використання. Заборонено: перепродаж, розповсюдження, публікація файлів чи доступів, зокрема у зміненому вигляді.",
+        blocks: [
+          {
+            type: "p",
+            text: "6.1. Придбання Товару надає Покупцеві невиключну ліцензію на особисте використання. Заборонено: перепродаж, розповсюдження, публікація файлів чи доступів, зокрема у зміненому вигляді.",
+          },
         ],
       },
       {
         heading: "7. Відповідальність",
-        paragraphs: [
-          "7.1. Tempo — інструмент для планування. Продавець не гарантує досягнення фінансових чи інших результатів Покупця.",
-          "7.2. Продавець не несе відповідальності за неможливість використання Товару через відсутність у Покупця необхідного програмного забезпечення (зокрема Microsoft Excel) або технічні проблеми на боці Покупця.",
+        blocks: [
+          {
+            type: "p",
+            text: "7.1. Tempo — інструмент для планування. Продавець не гарантує досягнення фінансових чи інших результатів Покупця.",
+          },
+          {
+            type: "p",
+            text: "7.2. Продавець не несе відповідальності за неможливість використання Товару через відсутність у Покупця необхідного програмного забезпечення (зокрема Microsoft Excel) або технічні проблеми на боці Покупця.",
+          },
         ],
       },
       {
         heading: "8. Персональні дані",
-        paragraphs: [
-          "8.1. Обробка персональних даних здійснюється відповідно до Політики конфіденційності.",
+        blocks: [
+          {
+            type: "p",
+            text: "8.1. Обробка персональних даних здійснюється відповідно до Політики конфіденційності.",
+          },
         ],
       },
       {
         heading: "9. Інші умови",
-        paragraphs: [
-          "9.1. Продавець може змінювати Оферту; нова редакція діє з моменту публікації на Сайті та не поширюється на вже оплачені замовлення.",
-          "9.2. Реквізити Продавця: ФОП [ПІБ], РНОКПП [___], адреса: [___], email: [___], Telegram: [@tempo_help].",
+        blocks: [
+          {
+            type: "p",
+            text: "9.1. Продавець може змінювати Оферту; нова редакція діє з моменту публікації на Сайті та не поширюється на вже оплачені замовлення.",
+          },
+          {
+            type: "p",
+            text: "9.2. Реквізити Продавця: ФОП Ломака Олександр Сергійович, РНОКПП 3712001990, місце реєстрації: Київ, Україна, IBAN: UA563220010000026005380018433, email: [___], Telegram: @tempo_help.",
+          },
         ],
       },
     ],
@@ -102,64 +155,109 @@ export const oferta: Record<Locale, LegalDoc> = {
     sections: [
       {
         heading: "1. General provisions",
-        paragraphs: [
-          "1.1. These Terms of Service (the \"Terms\") are an official offer by Sole Proprietor [Name], Tax ID [___], (the \"Seller\") to enter into a sales agreement for the digital products listed on the website [domain] (the \"Site\").",
-          "1.2. Acceptance of these Terms occurs upon payment for the Product. By paying for the Product, the Buyer confirms they have read the Terms and the Privacy Policy and accepts them in full.",
+        blocks: [
+          {
+            type: "p",
+            text: "1.1. These Terms of Service (the \"Terms\") are an official offer by Sole Proprietor Oleksandr Lomaka, Tax ID 3712001990, (the \"Seller\") to enter into a sales agreement for the digital products listed on the website tempo.in.ua (the \"Site\").",
+          },
+          {
+            type: "p",
+            text: "1.2. Acceptance of these Terms occurs upon payment for the Product. By paying for the Product, the Buyer confirms they have read the Terms and the Privacy Policy and accepts them in full.",
+          },
         ],
       },
       {
         heading: "2. Subject of the agreement",
-        paragraphs: [
-          "2.1. The Product consists of digital goods: (a) electronic planners in Excel file format with pre-built formulas, charts, and design (Start, System, and Premium plans); (b) access to the \"Tempo Game\" web app in early-access (beta) status.",
-          "2.2. The Product is the result of the Seller's intellectual work and is provided for personal, non-commercial use.",
+        blocks: [
+          {
+            type: "p",
+            text: "2.1. The Product consists of digital goods: (a) electronic planners in Excel file format with pre-built formulas, charts, and design (Start, System, and Premium plans); (b) access to the \"Tempo Game\" web app in early-access (beta) status.",
+          },
+          {
+            type: "p",
+            text: "2.2. The Product is the result of the Seller's intellectual work and is provided for personal, non-commercial use.",
+          },
         ],
       },
       {
         heading: "3. Price and payment",
-        paragraphs: [
-          "3.1. Prices are listed on the Site. The Seller may change prices; the Buyer pays the price in effect at the time of payment. Promotional prices apply for the period stated on the Site.",
-          "3.2. Payment is processed via the WayForPay payment service [and/or another provider]. The Seller does not receive or store payment card details.",
-          "3.3. Payment is one-time. There are no subscriptions or recurring charges.",
+        blocks: [
+          {
+            type: "p",
+            text: "3.1. Prices are listed on the Site. The Seller may change prices; the Buyer pays the price in effect at the time of payment. Promotional prices apply for the period stated on the Site.",
+          },
+          {
+            type: "p",
+            text: "3.2. Payment is processed via the WayForPay payment service [and/or another provider]. The Seller does not receive or store payment card details.",
+          },
+          { type: "p", text: "3.3. Payment is one-time. There are no subscriptions or recurring charges." },
         ],
       },
       {
         heading: "4. Delivery",
-        paragraphs: [
-          "4.1. The Product is sent to the email address provided by the Buyer at checkout, within 24 hours of payment (usually within a few minutes).",
-          "4.2. If the email doesn't arrive, the Buyer should contact support: Telegram [@tempo_help] or email [___]. The Seller will resend the Product.",
+        blocks: [
+          {
+            type: "p",
+            text: "4.1. The Product is sent to the email address provided by the Buyer at checkout, within 24 hours of payment (usually within a few minutes).",
+          },
+          {
+            type: "p",
+            text: "4.2. If the email doesn't arrive, the Buyer should contact support: Telegram @tempo_help or email [___]. The Seller will resend the Product.",
+          },
         ],
       },
       {
         heading: "5. Tempo Game (early access)",
-        paragraphs: [
-          "5.1. The \"Tempo Game\" app is provided in \"beta / early access\" status: full functionality is available on desktop; mobile versions are in development. Updates are provided to the Buyer free of charge.",
-          "5.2. The Seller makes reasonable efforts to develop the app further but does not guarantee specific release dates for individual features.",
+        blocks: [
+          {
+            type: "p",
+            text: "5.1. The \"Tempo Game\" app is provided in \"beta / early access\" status: full functionality is available on desktop; mobile versions are in development. Updates are provided to the Buyer free of charge.",
+          },
+          {
+            type: "p",
+            text: "5.2. The Seller makes reasonable efforts to develop the app further but does not guarantee specific release dates for individual features.",
+          },
         ],
       },
       {
         heading: "6. Intellectual property",
-        paragraphs: [
-          "6.1. Purchasing the Product grants the Buyer a non-exclusive license for personal use. Prohibited: resale, distribution, or publication of the files or access, including in modified form.",
+        blocks: [
+          {
+            type: "p",
+            text: "6.1. Purchasing the Product grants the Buyer a non-exclusive license for personal use. Prohibited: resale, distribution, or publication of the files or access, including in modified form.",
+          },
         ],
       },
       {
         heading: "7. Liability",
-        paragraphs: [
-          "7.1. Tempo is a planning tool. The Seller does not guarantee any financial or other results for the Buyer.",
-          "7.2. The Seller is not liable for the Buyer's inability to use the Product due to the Buyer lacking the necessary software (such as Microsoft Excel) or technical issues on the Buyer's side.",
+        blocks: [
+          {
+            type: "p",
+            text: "7.1. Tempo is a planning tool. The Seller does not guarantee any financial or other results for the Buyer.",
+          },
+          {
+            type: "p",
+            text: "7.2. The Seller is not liable for the Buyer's inability to use the Product due to the Buyer lacking the necessary software (such as Microsoft Excel) or technical issues on the Buyer's side.",
+          },
         ],
       },
       {
         heading: "8. Personal data",
-        paragraphs: [
-          "8.1. Personal data is processed in accordance with the Privacy Policy.",
+        blocks: [
+          { type: "p", text: "8.1. Personal data is processed in accordance with the Privacy Policy." },
         ],
       },
       {
         heading: "9. Other terms",
-        paragraphs: [
-          "9.1. The Seller may amend these Terms; the new version takes effect upon publication on the Site and does not apply to orders already paid for.",
-          "9.2. Seller details: Sole Proprietor [Name], Tax ID [___], address: [___], email: [___], Telegram: [@tempo_help].",
+        blocks: [
+          {
+            type: "p",
+            text: "9.1. The Seller may amend these Terms; the new version takes effect upon publication on the Site and does not apply to orders already paid for.",
+          },
+          {
+            type: "p",
+            text: "9.2. Seller details: Sole Proprietor Oleksandr Lomaka, Tax ID 3712001990, place of registration: Kyiv, Ukraine, IBAN: UA563220010000026005380018433, email: [___], Telegram: @tempo_help.",
+          },
         ],
       },
     ],
@@ -170,64 +268,112 @@ export const oferta: Record<Locale, LegalDoc> = {
     sections: [
       {
         heading: "1. Disposiciones generales",
-        paragraphs: [
-          "1.1. Esta oferta pública (la «Oferta») es una propuesta oficial de [Nombre del vendedor], NIF/CIF [___], (el «Vendedor») para celebrar un contrato de compraventa de los productos digitales publicados en el sitio [dominio] (el «Sitio»).",
-          "1.2. La aceptación de la Oferta se produce con el pago del Producto. Al pagar el Producto, el Comprador confirma que ha leído los términos de la Oferta y la Política de Privacidad y los acepta en su totalidad.",
+        blocks: [
+          {
+            type: "p",
+            text: "1.1. Esta oferta pública (la «Oferta») es una propuesta oficial de Oleksandr Lomaka, empresario individual (ФОП), NIF/CIF 3712001990, (el «Vendedor») para celebrar un contrato de compraventa de los productos digitales publicados en el sitio tempo.in.ua (el «Sitio»).",
+          },
+          {
+            type: "p",
+            text: "1.2. La aceptación de la Oferta se produce con el pago del Producto. Al pagar el Producto, el Comprador confirma que ha leído los términos de la Oferta y la Política de Privacidad y los acepta en su totalidad.",
+          },
         ],
       },
       {
         heading: "2. Objeto del contrato",
-        paragraphs: [
-          "2.1. El Producto consiste en productos digitales: (a) agendas electrónicas en formato Excel con fórmulas, gráficos y diseño preconfigurados (planes Start, System y Premium); (b) acceso a la aplicación web «Tempo Game» en estado de acceso anticipado (beta).",
-          "2.2. El Producto es resultado del trabajo intelectual del Vendedor y se entrega para uso personal y no comercial.",
+        blocks: [
+          {
+            type: "p",
+            text: "2.1. El Producto consiste en productos digitales: (a) agendas electrónicas en formato Excel con fórmulas, gráficos y diseño preconfigurados (planes Start, System y Premium); (b) acceso a la aplicación web «Tempo Game» en estado de acceso anticipado (beta).",
+          },
+          {
+            type: "p",
+            text: "2.2. El Producto es resultado del trabajo intelectual del Vendedor y se entrega para uso personal y no comercial.",
+          },
         ],
       },
       {
         heading: "3. Precio y pago",
-        paragraphs: [
-          "3.1. Los precios se indican en el Sitio. El Vendedor puede modificar los precios; al Comprador se le aplica el precio vigente en el momento del pago. Los precios promocionales son válidos durante el período indicado en el Sitio.",
-          "3.2. El pago se realiza a través del servicio de pago WayForPay [y/u otro proveedor]. El Vendedor no recibe ni almacena los datos de las tarjetas de pago.",
-          "3.3. El pago es único. No existen suscripciones ni cargos automáticos.",
+        blocks: [
+          {
+            type: "p",
+            text: "3.1. Los precios se indican en el Sitio. El Vendedor puede modificar los precios; al Comprador se le aplica el precio vigente en el momento del pago. Los precios promocionales son válidos durante el período indicado en el Sitio.",
+          },
+          {
+            type: "p",
+            text: "3.2. El pago se realiza a través del servicio de pago WayForPay [y/u otro proveedor]. El Vendedor no recibe ni almacena los datos de las tarjetas de pago.",
+          },
+          { type: "p", text: "3.3. El pago es único. No existen suscripciones ni cargos automáticos." },
         ],
       },
       {
         heading: "4. Entrega",
-        paragraphs: [
-          "4.1. El Producto se envía al correo electrónico indicado por el Comprador al pagar, dentro de las 24 horas siguientes al pago (por lo general, en pocos minutos).",
-          "4.2. Si el correo no llega, el Comprador debe contactar al soporte: Telegram [@tempo_help] o email [___]. El Vendedor volverá a enviar el Producto.",
+        blocks: [
+          {
+            type: "p",
+            text: "4.1. El Producto se envía al correo electrónico indicado por el Comprador al pagar, dentro de las 24 horas siguientes al pago (por lo general, en pocos minutos).",
+          },
+          {
+            type: "p",
+            text: "4.2. Si el correo no llega, el Comprador debe contactar al soporte: Telegram @tempo_help o email [___]. El Vendedor volverá a enviar el Producto.",
+          },
         ],
       },
       {
         heading: "5. Tempo Game (acceso anticipado)",
-        paragraphs: [
-          "5.1. La aplicación «Tempo Game» se ofrece en estado de «beta / acceso anticipado»: la funcionalidad completa está disponible en computadora; las versiones móviles están en desarrollo. Las actualizaciones se entregan al Comprador de forma gratuita.",
-          "5.2. El Vendedor hace esfuerzos razonables para seguir desarrollando la aplicación, pero no garantiza plazos concretos para el lanzamiento de funciones específicas.",
+        blocks: [
+          {
+            type: "p",
+            text: "5.1. La aplicación «Tempo Game» se ofrece en estado de «beta / acceso anticipado»: la funcionalidad completa está disponible en computadora; las versiones móviles están en desarrollo. Las actualizaciones se entregan al Comprador de forma gratuita.",
+          },
+          {
+            type: "p",
+            text: "5.2. El Vendedor hace esfuerzos razonables para seguir desarrollando la aplicación, pero no garantiza plazos concretos para el lanzamiento de funciones específicas.",
+          },
         ],
       },
       {
         heading: "6. Propiedad intelectual",
-        paragraphs: [
-          "6.1. La compra del Producto otorga al Comprador una licencia no exclusiva para uso personal. Está prohibido: la reventa, distribución o publicación de los archivos o accesos, incluso en forma modificada.",
+        blocks: [
+          {
+            type: "p",
+            text: "6.1. La compra del Producto otorga al Comprador una licencia no exclusiva para uso personal. Está prohibido: la reventa, distribución o publicación de los archivos o accesos, incluso en forma modificada.",
+          },
         ],
       },
       {
         heading: "7. Responsabilidad",
-        paragraphs: [
-          "7.1. Tempo es una herramienta de planificación. El Vendedor no garantiza que el Comprador obtenga resultados financieros ni de ningún otro tipo.",
-          "7.2. El Vendedor no se hace responsable de la imposibilidad de usar el Producto debido a que el Comprador no cuente con el software necesario (por ejemplo, Microsoft Excel) o por problemas técnicos del lado del Comprador.",
+        blocks: [
+          {
+            type: "p",
+            text: "7.1. Tempo es una herramienta de planificación. El Vendedor no garantiza que el Comprador obtenga resultados financieros ni de ningún otro tipo.",
+          },
+          {
+            type: "p",
+            text: "7.2. El Vendedor no se hace responsable de la imposibilidad de usar el Producto debido a que el Comprador no cuente con el software necesario (por ejemplo, Microsoft Excel) o por problemas técnicos del lado del Comprador.",
+          },
         ],
       },
       {
         heading: "8. Datos personales",
-        paragraphs: [
-          "8.1. El tratamiento de datos personales se realiza conforme a la Política de Privacidad.",
+        blocks: [
+          {
+            type: "p",
+            text: "8.1. El tratamiento de datos personales se realiza conforme a la Política de Privacidad.",
+          },
         ],
       },
       {
         heading: "9. Otras condiciones",
-        paragraphs: [
-          "9.1. El Vendedor puede modificar la Oferta; la nueva versión entra en vigor desde su publicación en el Sitio y no se aplica a los pedidos ya pagados.",
-          "9.2. Datos del Vendedor: [Nombre], NIF/CIF [___], dirección: [___], email: [___], Telegram: [@tempo_help].",
+        blocks: [
+          {
+            type: "p",
+            text: "9.1. El Vendedor puede modificar la Oferta; la nueva versión entra en vigor desde su publicación en el Sitio y no se aplica a los pedidos ya pagados.",
+          },
+          {
+            type: "p",
+            text: "9.2. Datos del Vendedor: Oleksandr Lomaka, empresario individual (ФОП), NIF/CIF 3712001990, lugar de registro: Kiev, Ucrania, IBAN: UA563220010000026005380018433, email: [___], Telegram: @tempo_help.",
+          },
         ],
       },
     ],
@@ -237,191 +383,648 @@ export const oferta: Record<Locale, LegalDoc> = {
 export const privacyPolicy: Record<Locale, LegalDoc> = {
   uk: {
     title: "Політика конфіденційності",
-    updated: "[___]",
+    updated: "09.08.2026",
     sections: [
       {
-        heading: "1. Хто ми",
-        paragraphs: [
-          "Володілець даних: ФОП [ПІБ], РНОКПП [___], email [___] (далі — «ми»). Політика описує обробку даних відвідувачів сайту [домен] та покупців.",
+        heading: "1. Хто обробляє ваші дані",
+        blocks: [
+          {
+            type: "p",
+            text: "Володільцем персональних даних є ФОП Ломака Олександр Сергійович, РНОКПП 3712001990, запис в ЄДР № 265126138813, адреса: Київ, Україна, e-mail: tempohelp@proton.me (далі — «ми», «Продавець»).",
+          },
+          {
+            type: "p",
+            text: "Ця Політика є невід'ємною частиною Публічної оферти і діє на сайті tempo.in.ua та у вебзастосунку «Tempo Game».",
+          },
+          {
+            type: "p",
+            text: "Обробка здійснюється відповідно до Закону України «Про захист персональних даних» № 2297-VI.",
+          },
         ],
       },
       {
         heading: "2. Які дані ми збираємо",
-        paragraphs: [
-          "Дані замовлення: email, імʼя (якщо вказано) — для доставки товару та підтримки.",
-          "Платіжні дані: обробляються платіжним провайдером (WayForPay [/інший]); ми не отримуємо і не зберігаємо реквізити карток.",
-          "Технічні дані: IP, тип пристрою, cookies, дії на сайті — через сервіси аналітики (Google Analytics 4, Meta Pixel) для покращення сайту та реклами.",
-          "Звернення в підтримку: вміст листування в Telegram/email.",
+        blocks: [
+          { type: "p", text: "2.1. Дані, які ви надаєте самі:" },
+          {
+            type: "table",
+            headers: ["Дані", "Коли збираємо", "Навіщо"],
+            rows: [
+              ["Ім'я", "оформлення замовлення", "звернення в листуванні, ідентифікація замовлення"],
+              ["Електронна адреса", "оформлення замовлення", "надсилання Товару, підтвердження, підтримка"],
+              ["Зміст звернень у підтримку", "листування", "відповідь на запит"],
+              ["Дані, які ви вносите в «Tempo Game»", "користування застосунком", "функціонування сервісу"],
+            ],
+          },
+          { type: "p", text: "2.2. Дані, які збираються автоматично:" },
+          {
+            type: "list",
+            items: [
+              "IP-адреса, тип браузера та пристрою, операційна система;",
+              "дата, час і факт проставлення відмітки про згоду з офертою, разом із версією документа (ця інформація фіксується як доказ укладення договору);",
+              "дані про замовлення: номер, сума, статус оплати, дата;",
+              "[дані аналітики та cookie — див. розділ 7].",
+            ],
+          },
+          { type: "p", text: "2.3. Дані, яких ми не отримуємо." },
+          {
+            type: "p",
+            text: "Ми не отримуємо, не обробляємо і не зберігаємо реквізити ваших платіжних карток. Оплата проходить на стороні платіжного сервісу WayForPay. Нам передається лише результат операції.",
+          },
         ],
       },
       {
-        heading: "3. Цілі та підстави обробки",
-        paragraphs: [
-          "Виконання договору (доставка товару, підтримка); законний інтерес (аналітика, захист від шахрайства); згода (маркетингові cookies/пікселі — для відвідувачів з ЄС збираються лише після згоди через cookie-банер).",
+        heading: "3. Навіщо і на якій підставі",
+        blocks: [
+          {
+            type: "table",
+            headers: ["Мета", "Правова підстава (ст. 11 Закону № 2297-VI)"],
+            rows: [
+              [
+                "Виконання договору: передача Товару, доступ до сервісу, підтримка",
+                "укладення та виконання правочину, стороною якого є суб'єкт даних",
+              ],
+              [
+                "Підтвердження факту укладення договору, розгляд претензій, захист у спорах",
+                "виконання обов'язку володільця, законний інтерес",
+              ],
+              [
+                "Виставлення розрахункових документів, податковий і бухгалтерський облік",
+                "виконання обов'язку, передбаченого законом",
+              ],
+            ],
+          },
+          {
+            type: "p",
+            text: "Ми не використовуємо ваші дані для автоматизованого прийняття рішень і профілювання, що має юридичні наслідки.",
+          },
         ],
       },
       {
-        heading: "4. Cookies та аналітика",
-        paragraphs: [
-          "Сайт використовує cookies: технічні (обовʼязкові), аналітичні (GA4) та маркетингові (Meta Pixel — для ретаргетингу). Керувати згодою можна через банер cookies або налаштування браузера.",
+        heading: "4. Кому передаємо",
+        blocks: [
+          { type: "p", text: "Дані передаються лише в обсязі, необхідному для роботи сервісу:" },
+          {
+            type: "table",
+            headers: ["Отримувач", "Що передаємо", "Навіщо"],
+            rows: [
+              ["WayForPay", "ім'я, e-mail, сума, номер замовлення", "проведення оплати"],
+              [
+                "Оператор фіскалізації",
+                "e-mail, сума, найменування товару",
+                "формування та надсилання фіскального чека",
+              ],
+              ["Сервіс для надсилання листів", "ім'я, e-mail", "доставка листів"],
+              ["Vercel Inc.", "технічне зберігання даних", "робота сайту та застосунку (хостинг)"],
+              [
+                "Державні органи",
+                "у визначеному законом обсязі",
+                "на письмову вимогу, у передбачених законом випадках",
+              ],
+            ],
+          },
+          {
+            type: "p",
+            text: "Ми не продаємо ваші дані та не передаємо їх третім особам у маркетингових цілях.",
+          },
+          {
+            type: "p",
+            text: "Транскордонна передача. Технічна інфраструктура сайту (хостинг) розташована у США (Vercel Inc.). Передача здійснюється до держав, що забезпечують належний захист персональних даних, або на підставі договорів із відповідними гарантіями.",
+          },
         ],
       },
       {
-        heading: "5. Кому передаються дані",
-        paragraphs: [
-          "Платіжному провайдеру (для проведення оплати), сервісам аналітики (Google, Meta), email-сервісу доставки листів [назва, якщо є]. Ми не продаємо персональні дані третім особам.",
+        heading: "5. Скільки зберігаємо",
+        blocks: [
+          {
+            type: "table",
+            headers: ["Категорія", "Строк"],
+            rows: [
+              ["Дані замовлення та первинні документи", "1095 днів (ст. 44 Податкового кодексу України)"],
+              [
+                "Логи згоди з офертою",
+                "3 роки з дати замовлення (строк позовної давності, ст. 257 ЦК України)",
+              ],
+              ["Листування з підтримкою", "[2 роки] з дати останнього повідомлення"],
+              ["Дані в «Tempo Game»", "протягом строку доступу + [30] днів на експорт"],
+            ],
+          },
+          { type: "p", text: "Після спливу строків дані видаляються або знеособлюються." },
         ],
       },
       {
-        heading: "6. Строки зберігання",
-        paragraphs: [
-          "Дані замовлень — протягом строків, встановлених податковим законодавством; аналітичні дані — відповідно до налаштувань сервісів (GA4 — до 14 місяців); листування підтримки — до 3 років.",
+        heading: "6. Ваші права",
+        blocks: [
+          { type: "p", text: "Відповідно до ст. 8 Закону № 2297-VI ви маєте право:" },
+          {
+            type: "list",
+            items: [
+              "знати, які ваші дані ми обробляємо, з якою метою та кому передаємо;",
+              "отримати копію своїх даних;",
+              "вимагати виправлення неточних або неповних даних;",
+              "вимагати видалення даних, якщо вони обробляються з порушенням закону або відпала мета обробки;",
+              "відкликати згоду на обробку — там, де підставою є ваша згода;",
+              "заперечувати проти обробки;",
+              "звернутися зі скаргою до Уповноваженого Верховної Ради України з прав людини.",
+            ],
+          },
+          {
+            type: "p",
+            text: "Як скористатися: напишіть на tempohelp@proton.me з адреси, вказаної при замовленні. Відповімо протягом 10 робочих днів, у складних випадках — до 30 днів із попереднім повідомленням.",
+          },
+          {
+            type: "p",
+            text: "Важливе обмеження. Ми не зможемо видалити дані, які зобов'язані зберігати за податковим законодавством, до спливу строку з розділу 5. Видалення даних, необхідних для виконання договору, означає припинення доступу до «Tempo Game».",
+          },
         ],
       },
       {
-        heading: "7. Ваші права",
-        paragraphs: [
-          "Ви маєте право на доступ до своїх даних, виправлення, видалення, обмеження обробки, заперечення проти обробки та відкликання згоди. Для користувачів з ЄС (GDPR): додатково — право на перенесення даних та на скаргу до наглядового органу вашої країни. Звернення: [email] — відповідаємо протягом 30 днів.",
+        heading: "7. Cookie та аналітика",
+        blocks: [
+          {
+            type: "p",
+            text: "7.1. Обов'язкові cookie — потрібні для роботи кошика, сесії та збереження вибору мови. Без них сайт не працює; вони не потребують згоди.",
+          },
+          {
+            type: "p",
+            text: "7.2. Аналітичні та рекламні cookie. Наразі сайт не встановлює аналітичні або рекламні cookie й не використовує трекери. Якщо ми додамо такі інструменти (наприклад, аналітику відвідувань), вони вмикатимуться лише після вашої явної згоди через банер на сайті, а ця Політика — оновлена заздалегідь.",
+          },
         ],
       },
       {
-        heading: "8. Діти",
-        paragraphs: [
-          "Сайт не призначений для осіб молодших 16 років без згоди батьків або опікунів.",
+        heading: "8. Безпека",
+        blocks: [
+          {
+            type: "p",
+            text: "Ми застосовуємо розумні технічні та організаційні заходи: шифрування з'єднання (HTTPS/TLS), обмеження доступу до баз даних, [резервне копіювання, двофакторна автентифікація адміністративних акаунтів].",
+          },
+          {
+            type: "p",
+            text: "Жодна система не є абсолютно захищеною. У разі витоку даних, що може створити ризик для ваших прав, ми повідомимо вас на електронну адресу та вживемо заходів для усунення наслідків.",
+          },
         ],
       },
       {
-        heading: "9. Зміни політики",
-        paragraphs: [
-          "Актуальна редакція завжди опублікована на цій сторінці із зазначенням дати оновлення. Дата: [___].",
+        heading: "9. Діти",
+        blocks: [
+          {
+            type: "p",
+            text: "Сайт і Товар не призначені для осіб віком до 18 років. Ми свідомо не збираємо дані таких осіб. Якщо вам стало відомо про подібний випадок — напишіть нам, і ми видалимо дані.",
+          },
+        ],
+      },
+      {
+        heading: "10. Зміни",
+        blocks: [
+          {
+            type: "p",
+            text: "Ми можемо оновлювати цю Політику; актуальна редакція завжди доступна на цій сторінці. Про істотні зміни повідомляємо на електронну пошту не пізніше ніж за 30 днів.",
+          },
+        ],
+      },
+      {
+        heading: "11. Контакти",
+        blocks: [
+          { type: "p", text: "ФОП Ломака Олександр Сергійович" },
+          { type: "p", text: "E-mail: tempohelp@proton.me" },
+          { type: "p", text: "Telegram: @tempo_help" },
+          { type: "p", text: "Адреса: Київ, Україна" },
+          {
+            type: "p",
+            text: "Скарга до наглядового органу: Уповноважений Верховної Ради України з прав людини, ombudsman.gov.ua.",
+          },
         ],
       },
     ],
   },
   en: {
     title: "Privacy Policy",
-    updated: "[___]",
+    updated: "August 9, 2026",
     sections: [
       {
-        heading: "1. Who we are",
-        paragraphs: [
-          "Data controller: Sole Proprietor [Name], Tax ID [___], email [___] (\"we\"). This Policy describes how we process the data of visitors and buyers on the website [domain].",
+        heading: "1. Who processes your data",
+        blocks: [
+          {
+            type: "p",
+            text: "The data controller is Sole Proprietor Oleksandr Lomaka, Tax ID 3712001990, state register record No. 265126138813, address: Kyiv, Ukraine, e-mail: tempohelp@proton.me (\"we\", \"Seller\").",
+          },
+          {
+            type: "p",
+            text: "This Policy is an integral part of the Terms of Service and applies to the website tempo.in.ua and the \"Tempo Game\" web app.",
+          },
+          {
+            type: "p",
+            text: "Processing is carried out in accordance with the Law of Ukraine \"On Personal Data Protection\" No. 2297-VI.",
+          },
         ],
       },
       {
         heading: "2. What data we collect",
-        paragraphs: [
-          "Order data: email, name (if provided) — for product delivery and support.",
-          "Payment data: processed by the payment provider (WayForPay [/other]); we do not receive or store card details.",
-          "Technical data: IP address, device type, cookies, on-site activity — via analytics services (Google Analytics 4, Meta Pixel) to improve the site and advertising.",
-          "Support inquiries: the contents of correspondence via Telegram/email.",
+        blocks: [
+          { type: "p", text: "2.1. Data you provide yourself:" },
+          {
+            type: "table",
+            headers: ["Data", "When we collect it", "Why"],
+            rows: [
+              ["Name", "placing an order", "correspondence, order identification"],
+              ["Email address", "placing an order", "sending the Product, confirmation, support"],
+              ["Contents of support inquiries", "correspondence", "responding to your request"],
+              ["Data you enter in \"Tempo Game\"", "using the app", "service functionality"],
+            ],
+          },
+          { type: "p", text: "2.2. Data collected automatically:" },
+          {
+            type: "list",
+            items: [
+              "IP address, browser and device type, operating system;",
+              "date, time, and the fact of ticking consent to the Terms, together with the document version (this is recorded as evidence the agreement was concluded);",
+              "order data: number, amount, payment status, date;",
+              "[analytics and cookie data — see section 7].",
+            ],
+          },
+          { type: "p", text: "2.3. Data we do not receive." },
+          {
+            type: "p",
+            text: "We do not receive, process, or store your payment card details. Payment is processed on the side of the WayForPay payment service. We only receive the result of the transaction.",
+          },
         ],
       },
       {
-        heading: "3. Purposes and legal basis for processing",
-        paragraphs: [
-          "Performance of the contract (product delivery, support); legitimate interest (analytics, fraud prevention); consent (marketing cookies/pixels — for EU visitors, collected only after consent via the cookie banner).",
+        heading: "3. Why and on what legal basis",
+        blocks: [
+          {
+            type: "table",
+            headers: ["Purpose", "Legal basis (Art. 11 of Law No. 2297-VI)"],
+            rows: [
+              [
+                "Performance of the contract: delivering the Product, service access, support",
+                "conclusion and performance of a transaction to which the data subject is a party",
+              ],
+              [
+                "Confirming the contract was concluded, handling claims, defense in disputes",
+                "performance of the controller's obligation, legitimate interest",
+              ],
+              [
+                "Issuing payment documents, tax and accounting records",
+                "performance of a statutory obligation",
+              ],
+            ],
+          },
+          {
+            type: "p",
+            text: "We do not use your data for automated decision-making or profiling that produces legal effects.",
+          },
         ],
       },
       {
-        heading: "4. Cookies and analytics",
-        paragraphs: [
-          "The Site uses cookies: essential (required), analytics (GA4), and marketing (Meta Pixel — for retargeting). You can manage consent via the cookie banner or your browser settings.",
+        heading: "4. Who we share data with",
+        blocks: [
+          { type: "p", text: "Data is shared only to the extent necessary for the service to function:" },
+          {
+            type: "table",
+            headers: ["Recipient", "What we share", "Why"],
+            rows: [
+              ["WayForPay", "name, e-mail, amount, order number", "processing payment"],
+              [
+                "Fiscal receipt operator",
+                "e-mail, amount, product name",
+                "generating and sending the fiscal receipt",
+              ],
+              ["Email delivery service", "name, e-mail", "delivering emails"],
+              ["Vercel Inc.", "technical data storage", "running the site and app (hosting)"],
+              [
+                "Government authorities",
+                "to the extent required by law",
+                "upon written request, in cases provided for by law",
+              ],
+            ],
+          },
+          { type: "p", text: "We do not sell your data or share it with third parties for marketing purposes." },
+          {
+            type: "p",
+            text: "Cross-border transfer. The site's hosting infrastructure is located in the United States (Vercel Inc.). Transfers are made to countries that ensure adequate protection of personal data, or under agreements with appropriate safeguards.",
+          },
         ],
       },
       {
-        heading: "5. Who we share data with",
-        paragraphs: [
-          "The payment provider (to process payments), analytics services (Google, Meta), the email delivery service [name, if any]. We do not sell personal data to third parties.",
+        heading: "5. How long we keep it",
+        blocks: [
+          {
+            type: "table",
+            headers: ["Category", "Period"],
+            rows: [
+              ["Order data and source documents", "1095 days (Art. 44 of the Tax Code of Ukraine)"],
+              [
+                "Terms-consent logs",
+                "3 years from the order date (statute-of-limitations period, Art. 257 of the Civil Code of Ukraine)",
+              ],
+              ["Support correspondence", "[2 years] from the date of the last message"],
+              ["Data in \"Tempo Game\"", "for the duration of access + [30] days for export"],
+            ],
+          },
+          { type: "p", text: "Once these periods expire, data is deleted or de-identified." },
         ],
       },
       {
-        heading: "6. Retention periods",
-        paragraphs: [
-          "Order data — for the periods required by tax law; analytics data — according to service settings (GA4 — up to 14 months); support correspondence — up to 3 years.",
+        heading: "6. Your rights",
+        blocks: [
+          { type: "p", text: "Under Art. 8 of Law No. 2297-VI, you have the right to:" },
+          {
+            type: "list",
+            items: [
+              "know what data we process about you, for what purpose, and to whom we disclose it;",
+              "obtain a copy of your data;",
+              "request correction of inaccurate or incomplete data;",
+              "request deletion of data if it is processed unlawfully or the purpose of processing no longer applies;",
+              "withdraw consent to processing — where consent is the legal basis;",
+              "object to processing;",
+              "file a complaint with the Ukrainian Parliament Commissioner for Human Rights.",
+            ],
+          },
+          {
+            type: "p",
+            text: "How to exercise these rights: write to tempohelp@proton.me from the address you used when ordering. We respond within 10 business days, or up to 30 days in complex cases, with prior notice.",
+          },
+          {
+            type: "p",
+            text: "Important limitation. We cannot delete data we are legally required to keep under tax law until the periods in section 5 expire. Deleting data necessary to perform the contract means access to \"Tempo Game\" will be terminated.",
+          },
         ],
       },
       {
-        heading: "7. Your rights",
-        paragraphs: [
-          "You have the right to access, correct, delete, and restrict the processing of your data, to object to processing, and to withdraw consent. For EU users (GDPR): additionally, the right to data portability and to lodge a complaint with your country's supervisory authority. Contact: [email] — we respond within 30 days.",
+        heading: "7. Cookies and analytics",
+        blocks: [
+          {
+            type: "p",
+            text: "7.1. Essential cookies — needed for cart, session, and language-preference functionality. The site does not work without them; they do not require consent.",
+          },
+          {
+            type: "p",
+            text: "7.2. Analytics and advertising cookies. The site does not currently set any analytics or advertising cookies and does not use trackers. If we add such tools in the future (for example, visit analytics), they will only be enabled after your explicit consent via an on-site banner, and this Policy will be updated in advance.",
+          },
         ],
       },
       {
-        heading: "8. Children",
-        paragraphs: [
-          "The Site is not intended for individuals under 16 without parental or guardian consent.",
+        heading: "8. Security",
+        blocks: [
+          {
+            type: "p",
+            text: "We apply reasonable technical and organizational measures: encrypted connections (HTTPS/TLS), restricted access to databases, [backups, two-factor authentication for administrative accounts].",
+          },
+          {
+            type: "p",
+            text: "No system is completely secure. In the event of a data breach that could create a risk to your rights, we will notify you by e-mail and take steps to remediate it.",
+          },
         ],
       },
       {
-        heading: "9. Changes to this Policy",
-        paragraphs: [
-          "The current version is always published on this page along with the update date. Date: [___].",
+        heading: "9. Children",
+        blocks: [
+          {
+            type: "p",
+            text: "The Site and the Product are not intended for individuals under 18. We do not knowingly collect data from such individuals. If you become aware of such a case, please contact us and we will delete the data.",
+          },
+        ],
+      },
+      {
+        heading: "10. Changes",
+        blocks: [
+          {
+            type: "p",
+            text: "We may update this Policy; the current version is always available on this page. We notify you of material changes by e-mail no later than 30 days in advance.",
+          },
+        ],
+      },
+      {
+        heading: "11. Contact",
+        blocks: [
+          { type: "p", text: "Sole Proprietor Oleksandr Lomaka" },
+          { type: "p", text: "E-mail: tempohelp@proton.me" },
+          { type: "p", text: "Telegram: @tempo_help" },
+          { type: "p", text: "Address: Kyiv, Ukraine" },
+          {
+            type: "p",
+            text: "Complaints to the supervisory authority: Ukrainian Parliament Commissioner for Human Rights, ombudsman.gov.ua.",
+          },
         ],
       },
     ],
   },
   es: {
     title: "Política de privacidad",
-    updated: "[___]",
+    updated: "9 de agosto de 2026",
     sections: [
       {
-        heading: "1. Quiénes somos",
-        paragraphs: [
-          "Responsable de los datos: [Nombre del vendedor], NIF/CIF [___], email [___] («nosotros»). Esta Política describe el tratamiento de los datos de los visitantes y compradores del sitio [dominio].",
+        heading: "1. Quién trata tus datos",
+        blocks: [
+          {
+            type: "p",
+            text: "El responsable de los datos personales es Oleksandr Lomaka, empresario individual (ФОП), NIF/CIF 3712001990, registro estatal n.º 265126138813, dirección: Kiev, Ucrania, e-mail: tempohelp@proton.me (en adelante, «nosotros», «Vendedor»).",
+          },
+          {
+            type: "p",
+            text: "Esta Política es parte integral de la Oferta pública y se aplica al sitio tempo.in.ua y a la aplicación web «Tempo Game».",
+          },
+          {
+            type: "p",
+            text: "El tratamiento se realiza de conformidad con la Ley de Ucrania «Sobre la Protección de Datos Personales» n.º 2297-VI.",
+          },
         ],
       },
       {
         heading: "2. Qué datos recopilamos",
-        paragraphs: [
-          "Datos del pedido: email, nombre (si se indica) — para la entrega del producto y el soporte.",
-          "Datos de pago: procesados por el proveedor de pagos (WayForPay [/otro]); no recibimos ni almacenamos los datos de las tarjetas.",
-          "Datos técnicos: IP, tipo de dispositivo, cookies, actividad en el sitio — mediante servicios de analítica (Google Analytics 4, Meta Pixel) para mejorar el sitio y la publicidad.",
-          "Consultas de soporte: el contenido de la correspondencia por Telegram/email.",
+        blocks: [
+          { type: "p", text: "2.1. Datos que tú nos proporcionas:" },
+          {
+            type: "table",
+            headers: ["Dato", "Cuándo lo recopilamos", "Para qué"],
+            rows: [
+              ["Nombre", "al realizar el pedido", "correspondencia, identificación del pedido"],
+              ["Correo electrónico", "al realizar el pedido", "envío del Producto, confirmación, soporte"],
+              ["Contenido de las consultas de soporte", "correspondencia", "responder a tu consulta"],
+              ["Datos que introduces en «Tempo Game»", "uso de la aplicación", "funcionamiento del servicio"],
+            ],
+          },
+          { type: "p", text: "2.2. Datos que se recopilan automáticamente:" },
+          {
+            type: "list",
+            items: [
+              "dirección IP, tipo de navegador y dispositivo, sistema operativo;",
+              "fecha, hora y el hecho de haber marcado la casilla de aceptación de la Oferta, junto con la versión del documento (esta información se registra como prueba de la celebración del contrato);",
+              "datos del pedido: número, importe, estado del pago, fecha;",
+              "[datos de analítica y cookies — ver sección 7].",
+            ],
+          },
+          { type: "p", text: "2.3. Datos que no recibimos." },
+          {
+            type: "p",
+            text: "No recibimos, procesamos ni almacenamos los datos de tus tarjetas de pago. El pago se procesa en el lado del servicio de pago WayForPay. Solo recibimos el resultado de la operación.",
+          },
         ],
       },
       {
-        heading: "3. Finalidades y base legal del tratamiento",
-        paragraphs: [
-          "Ejecución del contrato (entrega del producto, soporte); interés legítimo (analítica, prevención de fraude); consentimiento (cookies/píxeles de marketing — para visitantes de la UE, se recopilan solo tras el consentimiento mediante el banner de cookies).",
+        heading: "3. Para qué y con qué base legal",
+        blocks: [
+          {
+            type: "table",
+            headers: ["Finalidad", "Base legal (art. 11 de la Ley n.º 2297-VI)"],
+            rows: [
+              [
+                "Ejecución del contrato: entrega del Producto, acceso al servicio, soporte",
+                "celebración y ejecución de un contrato del que el titular de los datos es parte",
+              ],
+              [
+                "Confirmación de la celebración del contrato, gestión de reclamaciones, defensa en litigios",
+                "cumplimiento de una obligación del responsable, interés legítimo",
+              ],
+              [
+                "Emisión de documentos de pago, contabilidad fiscal y financiera",
+                "cumplimiento de una obligación legal",
+              ],
+            ],
+          },
+          {
+            type: "p",
+            text: "No utilizamos tus datos para la toma de decisiones automatizada ni la elaboración de perfiles con efectos jurídicos.",
+          },
         ],
       },
       {
-        heading: "4. Cookies y analítica",
-        paragraphs: [
-          "El Sitio utiliza cookies: técnicas (obligatorias), analíticas (GA4) y de marketing (Meta Pixel — para retargeting). Puedes gestionar el consentimiento a través del banner de cookies o la configuración de tu navegador.",
+        heading: "4. A quién transferimos los datos",
+        blocks: [
+          { type: "p", text: "Los datos se transfieren solo en la medida necesaria para el funcionamiento del servicio:" },
+          {
+            type: "table",
+            headers: ["Destinatario", "Qué transferimos", "Para qué"],
+            rows: [
+              ["WayForPay", "nombre, e-mail, importe, número de pedido", "procesar el pago"],
+              [
+                "Operador de recibos fiscales",
+                "e-mail, importe, nombre del producto",
+                "generar y enviar el recibo fiscal",
+              ],
+              ["Servicio de envío de correos", "nombre, e-mail", "entrega de correos"],
+              ["Vercel Inc.", "almacenamiento técnico de datos", "funcionamiento del sitio y la app (hosting)"],
+              [
+                "Autoridades públicas",
+                "en la medida prevista por la ley",
+                "a solicitud por escrito, en los casos previstos por la ley",
+              ],
+            ],
+          },
+          {
+            type: "p",
+            text: "No vendemos tus datos ni los compartimos con terceros con fines de marketing.",
+          },
+          {
+            type: "p",
+            text: "Transferencia internacional. La infraestructura de hosting del sitio está ubicada en Estados Unidos (Vercel Inc.). Las transferencias se realizan a países que garantizan una protección adecuada de los datos personales, o en virtud de contratos con las garantías correspondientes.",
+          },
         ],
       },
       {
-        heading: "5. A quién se transfieren los datos",
-        paragraphs: [
-          "Al proveedor de pagos (para procesar el pago), a servicios de analítica (Google, Meta), al servicio de envío de emails [nombre, si aplica]. No vendemos datos personales a terceros.",
+        heading: "5. Cuánto tiempo los conservamos",
+        blocks: [
+          {
+            type: "table",
+            headers: ["Categoría", "Plazo"],
+            rows: [
+              ["Datos del pedido y documentos primarios", "1095 días (art. 44 del Código Tributario de Ucrania)"],
+              [
+                "Registros de aceptación de la Oferta",
+                "3 años desde la fecha del pedido (plazo de prescripción, art. 257 del Código Civil de Ucrania)",
+              ],
+              ["Correspondencia de soporte", "[2 años] desde la fecha del último mensaje"],
+              ["Datos en «Tempo Game»", "durante el período de acceso + [30] días para exportación"],
+            ],
+          },
+          { type: "p", text: "Una vez vencidos los plazos, los datos se eliminan o se anonimizan." },
         ],
       },
       {
-        heading: "6. Plazos de conservación",
-        paragraphs: [
-          "Los datos de los pedidos — durante los plazos establecidos por la legislación fiscal; los datos analíticos — según la configuración de cada servicio (GA4 — hasta 14 meses); la correspondencia de soporte — hasta 3 años.",
+        heading: "6. Tus derechos",
+        blocks: [
+          { type: "p", text: "De conformidad con el art. 8 de la Ley n.º 2297-VI, tienes derecho a:" },
+          {
+            type: "list",
+            items: [
+              "saber qué datos tuyos tratamos, con qué finalidad y a quién los transferimos;",
+              "obtener una copia de tus datos;",
+              "solicitar la rectificación de datos inexactos o incompletos;",
+              "solicitar la eliminación de datos si se tratan incumpliendo la ley o si ha desaparecido la finalidad del tratamiento;",
+              "retirar el consentimiento al tratamiento — cuando la base legal sea el consentimiento;",
+              "oponerte al tratamiento;",
+              "presentar una reclamación ante el Defensor del Pueblo del Parlamento de Ucrania (Ombudsman).",
+            ],
+          },
+          {
+            type: "p",
+            text: "Cómo ejercerlos: escríbenos a tempohelp@proton.me desde la dirección que usaste al hacer el pedido. Responderemos en un plazo de 10 días hábiles, o hasta 30 días en casos complejos, con aviso previo.",
+          },
+          {
+            type: "p",
+            text: "Limitación importante. No podremos eliminar los datos que estemos obligados a conservar por la legislación fiscal hasta que venzan los plazos de la sección 5. Eliminar los datos necesarios para la ejecución del contrato implica la interrupción del acceso a «Tempo Game».",
+          },
         ],
       },
       {
-        heading: "7. Tus derechos",
-        paragraphs: [
-          "Tienes derecho a acceder a tus datos, rectificarlos, eliminarlos, limitar su tratamiento, oponerte a su tratamiento y retirar tu consentimiento. Para usuarios de la UE (RGPD): además, derecho a la portabilidad de los datos y a presentar una reclamación ante la autoridad de control de tu país. Contacto: [email] — respondemos en un plazo de 30 días.",
+        heading: "7. Cookies y analítica",
+        blocks: [
+          {
+            type: "p",
+            text: "7.1. Cookies técnicas obligatorias — necesarias para el funcionamiento del carrito, la sesión y la preferencia de idioma. Sin ellas el sitio no funciona; no requieren consentimiento.",
+          },
+          {
+            type: "p",
+            text: "7.2. Cookies analíticas y publicitarias. Actualmente el sitio no instala cookies analíticas ni publicitarias y no utiliza rastreadores. Si en el futuro añadimos este tipo de herramientas (por ejemplo, analítica de visitas), se activarán solo tras tu consentimiento explícito mediante un banner en el sitio, y esta Política se actualizará previamente.",
+          },
         ],
       },
       {
-        heading: "8. Menores",
-        paragraphs: [
-          "El Sitio no está dirigido a personas menores de 16 años sin el consentimiento de sus padres o tutores.",
+        heading: "8. Seguridad",
+        blocks: [
+          {
+            type: "p",
+            text: "Aplicamos medidas técnicas y organizativas razonables: conexión cifrada (HTTPS/TLS), acceso restringido a las bases de datos, [copias de seguridad, autenticación de dos factores para las cuentas administrativas].",
+          },
+          {
+            type: "p",
+            text: "Ningún sistema es absolutamente seguro. En caso de una filtración de datos que pueda suponer un riesgo para tus derechos, te lo notificaremos por correo electrónico y adoptaremos medidas para mitigar sus consecuencias.",
+          },
         ],
       },
       {
-        heading: "9. Cambios en esta Política",
-        paragraphs: [
-          "La versión vigente siempre está publicada en esta página, junto con la fecha de actualización. Fecha: [___].",
+        heading: "9. Menores",
+        blocks: [
+          {
+            type: "p",
+            text: "El Sitio y el Producto no están dirigidos a personas menores de 18 años. No recopilamos conscientemente datos de dichas personas. Si tienes conocimiento de un caso así, escríbenos y eliminaremos los datos.",
+          },
+        ],
+      },
+      {
+        heading: "10. Cambios",
+        blocks: [
+          {
+            type: "p",
+            text: "Podemos actualizar esta Política; la versión vigente siempre está disponible en esta página. Te notificaremos los cambios sustanciales por correo electrónico con una antelación mínima de 30 días.",
+          },
+        ],
+      },
+      {
+        heading: "11. Contacto",
+        blocks: [
+          { type: "p", text: "Oleksandr Lomaka, empresario individual (ФОП)" },
+          { type: "p", text: "E-mail: tempohelp@proton.me" },
+          { type: "p", text: "Telegram: @tempo_help" },
+          { type: "p", text: "Dirección: Kiev, Ucrania" },
+          {
+            type: "p",
+            text: "Reclamación ante la autoridad de control: Defensor del Pueblo del Parlamento de Ucrania (Ombudsman), ombudsman.gov.ua.",
+          },
         ],
       },
     ],
   },
 };
+
