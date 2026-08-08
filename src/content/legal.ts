@@ -1,10 +1,8 @@
 /**
  * Draft legal documents (oferta, privacy policy). These are drafts, not
  * legal advice — a lawyer should review them before publishing, especially
- * for EU sales. Placeholders still open: contact e-mail and the ЄДР
- * registration record number for the oferta. The English and Spanish
- * versions are translations of the same draft and need the same legal
- * review.
+ * for EU sales. The English and Spanish versions are translations of the
+ * same draft and need the same legal review.
  */
 import type { Locale } from "@/lib/locale";
 
@@ -35,7 +33,7 @@ export const legalUi: Record<Locale, { back: string; updated: string }> = {
 export const oferta: Record<Locale, LegalDoc> = {
   uk: {
     title: "Публічна оферта",
-    updated: "04.08.2026",
+    updated: "09.08.2026",
     intro: "Договір купівлі-продажу цифрових товарів",
     sections: [
       {
@@ -44,7 +42,7 @@ export const oferta: Record<Locale, LegalDoc> = {
           {
             type: "list",
             items: [
-              "«Продавець» — фізична особа-підприємець Ломака Олександр Сергійович, РНОКПП 3712001990, запис в ЄДР № [___] від [___], адреса для листування: Київ, Україна, платник єдиного податку [___] групи, не є платником ПДВ.",
+              "«Продавець» — фізична особа-підприємець Ломака Олександр Сергійович, РНОКПП 3712001990, запис в ЄДР № 265126138813, адреса для листування: Київ, Україна, платник єдиного податку, не є платником ПДВ.",
               "«Покупець» — дієздатна фізична особа, якій виповнилося 18 років, фізична особа-підприємець або юридична особа, яка акцептувала цю Оферту.",
               "«Споживач» — Покупець, який придбаває Товар для потреб, не пов'язаних із підприємницькою діяльністю. До відносин зі Споживачем додатково застосовується Закон України «Про захист прав споживачів».",
               "«Сайт» — вебсайт Продавця за адресою tempo.in.ua.",
@@ -97,11 +95,11 @@ export const oferta: Record<Locale, LegalDoc> = {
             rows: [
               ["Повне найменування", "ФОП Ломака Олександр Сергійович"],
               ["РНОКПП", "3712001990"],
-              ["Запис в ЄДР", "№ [___] від [___]"],
+              ["Запис в ЄДР", "№ 265126138813"],
               ["Адреса для листування та звернень", "Київ, Україна"],
-              ["Електронна пошта", "[___]"],
+              ["Електронна пошта", "tempohelp@proton.me"],
               ["Telegram-підтримка", "@tempo_help"],
-              ["Графік роботи підтримки", "Пн–Пт, 10:00–19:00 за київським часом"],
+              ["Графік роботи підтримки", "Щодня, 08:00–20:00 за київським часом"],
               ["Строк відповіді на звернення", "до 2 робочих днів"],
             ],
           },
@@ -122,23 +120,14 @@ export const oferta: Record<Locale, LegalDoc> = {
           },
           {
             type: "table",
-            headers: ["Тариф", "Склад", "Кількість аркушів"],
+            headers: ["Тариф", "Склад"],
             rows: [
-              [
-                "Старт",
-                "Планер (календар місяця, фокус, пріоритети тижня), трекер звичок",
-                "[___]",
-              ],
+              ["Старт", "Планер (календар місяця, фокус, пріоритети тижня), трекер звичок"],
               [
                 "Система",
                 "Усе зі «Старту» + Фінанси (доходи, витрати, баланс), Цілі з прогрес-баром, Здоров'я",
-                "[___]",
               ],
-              [
-                "Premium",
-                "Усе із «Системи» + Харчування (меню, список покупок), Проекти",
-                "[___]",
-              ],
+              ["Premium", "Усе із «Системи» + Харчування (меню, список покупок), Проекти"],
             ],
           },
           {
@@ -482,7 +471,7 @@ export const oferta: Record<Locale, LegalDoc> = {
         blocks: [
           { type: "p", text: "ФОП Ломака Олександр Сергійович" },
           { type: "p", text: "РНОКПП: 3712001990" },
-          { type: "p", text: "Запис в ЄДР: № [___] від [___]" },
+          { type: "p", text: "Запис в ЄДР: № 265126138813" },
           { type: "p", text: "Адреса: Київ, Україна" },
           { type: "p", text: "E-mail: tempohelp@proton.me" },
           { type: "p", text: "Telegram: @tempo_help" },
@@ -494,7 +483,7 @@ export const oferta: Record<Locale, LegalDoc> = {
   },
   en: {
     title: "Terms of Service",
-    updated: "August 4, 2026",
+    updated: "August 9, 2026",
     intro: "Agreement for the sale of digital products",
     sections: [
       {
@@ -503,7 +492,7 @@ export const oferta: Record<Locale, LegalDoc> = {
           {
             type: "list",
             items: [
-              "\"Seller\" — Sole Proprietor Oleksandr Lomaka, Tax ID 3712001990, state register record No. [___] dated [___], correspondence address: Kyiv, Ukraine, single-tax payer, group [___], not a VAT payer.",
+              "\"Seller\" — Sole Proprietor Oleksandr Lomaka, Tax ID 3712001990, state register record No. 265126138813, correspondence address: Kyiv, Ukraine, single-tax payer, not a VAT payer.",
               "\"Buyer\" — a legally competent individual who has turned 18, a sole proprietor, or a legal entity that has accepted these Terms.",
               "\"Consumer\" — a Buyer purchasing the Product for purposes unrelated to business activity. The Law of Ukraine \"On Consumer Rights Protection\" additionally applies to relations with a Consumer.",
               "\"Site\" — the Seller's website at tempo.in.ua.",
@@ -556,11 +545,11 @@ export const oferta: Record<Locale, LegalDoc> = {
             rows: [
               ["Full name", "Sole Proprietor Oleksandr Lomaka"],
               ["Tax ID", "3712001990"],
-              ["State register record", "No. [___] dated [___]"],
+              ["State register record", "No. 265126138813"],
               ["Correspondence address", "Kyiv, Ukraine"],
-              ["E-mail", "[___]"],
+              ["E-mail", "tempohelp@proton.me"],
               ["Telegram support", "@tempo_help"],
-              ["Support hours", "Mon–Fri, 10:00–19:00 Kyiv time"],
+              ["Support hours", "Daily, 08:00–20:00 Kyiv time"],
               ["Response time", "within 2 business days"],
             ],
           },
@@ -581,15 +570,14 @@ export const oferta: Record<Locale, LegalDoc> = {
           },
           {
             type: "table",
-            headers: ["Plan", "Contents", "Number of sheets"],
+            headers: ["Plan", "Contents"],
             rows: [
-              ["Start", "Planner (monthly calendar, focus, weekly priorities), habit tracker", "[___]"],
+              ["Start", "Planner (monthly calendar, focus, weekly priorities), habit tracker"],
               [
                 "System",
                 "Everything in Start + Finances (income, expenses, balance), Goals with a progress bar, Health",
-                "[___]",
               ],
-              ["Premium", "Everything in System + Nutrition (meal plan, shopping list), Projects", "[___]"],
+              ["Premium", "Everything in System + Nutrition (meal plan, shopping list), Projects"],
             ],
           },
           {
@@ -921,7 +909,7 @@ export const oferta: Record<Locale, LegalDoc> = {
         blocks: [
           { type: "p", text: "Sole Proprietor Oleksandr Lomaka" },
           { type: "p", text: "Tax ID: 3712001990" },
-          { type: "p", text: "State register record: No. [___] dated [___]" },
+          { type: "p", text: "State register record: No. 265126138813" },
           { type: "p", text: "Address: Kyiv, Ukraine" },
           { type: "p", text: "E-mail: tempohelp@proton.me" },
           { type: "p", text: "Telegram: @tempo_help" },
@@ -933,7 +921,7 @@ export const oferta: Record<Locale, LegalDoc> = {
   },
   es: {
     title: "Oferta pública",
-    updated: "4 de agosto de 2026",
+    updated: "9 de agosto de 2026",
     intro: "Contrato de compraventa de productos digitales",
     sections: [
       {
@@ -942,7 +930,7 @@ export const oferta: Record<Locale, LegalDoc> = {
           {
             type: "list",
             items: [
-              "«Vendedor» — Oleksandr Lomaka, empresario individual (ФОП), NIF/CIF 3712001990, registro estatal n.º [___] de fecha [___], dirección de correspondencia: Kiev, Ucrania, contribuyente del impuesto único, grupo [___], no es contribuyente del IVA.",
+              "«Vendedor» — Oleksandr Lomaka, empresario individual (ФОП), NIF/CIF 3712001990, registro estatal n.º 265126138813, dirección de correspondencia: Kiev, Ucrania, contribuyente del impuesto único, no es contribuyente del IVA.",
               "«Comprador» — una persona física con capacidad legal que ha cumplido 18 años, un empresario individual o una persona jurídica que haya aceptado esta Oferta.",
               "«Consumidor» — el Comprador que adquiere el Producto para fines no relacionados con su actividad empresarial. A las relaciones con el Consumidor se aplica adicionalmente la Ley de Ucrania «Sobre la Protección de los Derechos del Consumidor».",
               "«Sitio» — el sitio web del Vendedor en tempo.in.ua.",
@@ -995,11 +983,11 @@ export const oferta: Record<Locale, LegalDoc> = {
             rows: [
               ["Nombre completo", "Oleksandr Lomaka, empresario individual (ФОП)"],
               ["NIF/CIF", "3712001990"],
-              ["Registro estatal", "n.º [___] de fecha [___]"],
+              ["Registro estatal", "n.º 265126138813"],
               ["Dirección de correspondencia", "Kiev, Ucrania"],
-              ["Correo electrónico", "[___]"],
+              ["Correo electrónico", "tempohelp@proton.me"],
               ["Soporte por Telegram", "@tempo_help"],
-              ["Horario de soporte", "lun.–vie., 10:00–19:00 hora de Kiev"],
+              ["Horario de soporte", "Todos los días, 08:00–20:00 hora de Kiev"],
               ["Plazo de respuesta", "hasta 2 días hábiles"],
             ],
           },
@@ -1020,15 +1008,14 @@ export const oferta: Record<Locale, LegalDoc> = {
           },
           {
             type: "table",
-            headers: ["Plan", "Contenido", "Número de hojas"],
+            headers: ["Plan", "Contenido"],
             rows: [
-              ["Start", "Agenda (calendario mensual, foco, prioridades semanales), seguimiento de hábitos", "[___]"],
+              ["Start", "Agenda (calendario mensual, foco, prioridades semanales), seguimiento de hábitos"],
               [
                 "System",
                 "Todo lo de Start + Finanzas (ingresos, gastos, balance), Metas con barra de progreso, Salud",
-                "[___]",
               ],
-              ["Premium", "Todo lo de System + Nutrición (menú, lista de compras), Proyectos", "[___]"],
+              ["Premium", "Todo lo de System + Nutrición (menú, lista de compras), Proyectos"],
             ],
           },
           {
@@ -1360,7 +1347,7 @@ export const oferta: Record<Locale, LegalDoc> = {
         blocks: [
           { type: "p", text: "Oleksandr Lomaka, empresario individual (ФОП)" },
           { type: "p", text: "NIF/CIF: 3712001990" },
-          { type: "p", text: "Registro estatal: n.º [___] de fecha [___]" },
+          { type: "p", text: "Registro estatal: n.º 265126138813" },
           { type: "p", text: "Dirección: Kiev, Ucrania" },
           { type: "p", text: "E-mail: tempohelp@proton.me" },
           { type: "p", text: "Telegram: @tempo_help" },
