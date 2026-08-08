@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { fontDisplay, fontText, fontWordmark } from "./fonts";
 import { SiteChrome } from "@/components/SiteChrome";
 import { Header } from "@/components/Header";
@@ -48,6 +49,7 @@ export default function RootLayout({
         <SiteChrome />
         <Header />
         {children}
+        <Analytics />
       </body>
     </html>
   );
