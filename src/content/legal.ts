@@ -1,8 +1,8 @@
 /**
- * Draft legal documents (oferta, privacy policy). These are drafts, not
- * legal advice — a lawyer should review them before publishing, especially
- * for EU sales. The English and Spanish versions are translations of the
- * same draft and need the same legal review.
+ * Draft legal documents (oferta, refund policy, privacy policy). These are
+ * drafts, not legal advice — a lawyer should review them before publishing,
+ * especially for EU sales. The English and Spanish versions are translations
+ * of the same draft and need the same legal review.
  */
 import type { Locale } from "@/lib/locale";
 
@@ -294,23 +294,32 @@ export const oferta: Record<Locale, LegalDoc> = {
         blocks: [
           {
             type: "p",
-            text: "10.1. Продавець гарантує, що Товар відповідає опису, розміщеному на Сайті на момент оплати.",
+            text: "10.1. Товар є цифровим контентом, постачання якого розпочинається негайно після оплати. Оплачуючи Товар, Покупець надає пряму згоду на негайне постачання цифрового контенту і підтверджує, що право відмови від Договору у зв'язку зі зміною наміру («передумав») після початку постачання не застосовується, в межах, дозволених законодавством України.",
           },
           {
             type: "p",
-            text: "10.2. Повернення без пояснення причин. Покупець має право відмовитися від Договору та отримати повне повернення сплачених коштів протягом 14 календарних днів з дати оплати, без пояснення причин. Детальний порядок визначено Політикою повернення.",
+            text: "10.2. Продавець гарантує, що Товар відповідає опису, розміщеному на Сайті на момент оплати.",
           },
           {
             type: "p",
-            text: "10.3. Порядок звернення. Заява подається на електронну пошту або в Telegram-підтримку (розділ 3) із зазначенням: електронної адреси замовлення, дати оплати та найменування Товару.",
+            text: "10.3. Умовне повернення коштів. Попри п. 10.1, Продавець повертає кошти протягом 14 днів з дати оплати за наявності поважної причини:",
+          },
+          {
+            type: "list",
+            items: [
+              "Товар не було надано, і проблему не усунуто протягом 72 годин після звернення до підтримки;",
+              "Товар суттєво не відповідає опису тарифу, розміщеному на Сайті на момент покупки (відсутні заявлені модулі чи функції);",
+              "технічний дефект Товару (наприклад, пошкоджений файл або формули), який Продавець не усунув і не замінив протягом 5 робочих днів після звернення;",
+              "подвійна або помилкова оплата.",
+            ],
           },
           {
             type: "p",
-            text: "10.4. Продавець розглядає заяву протягом 3 робочих днів і в разі задоволення повертає кошти протягом 5 робочих днів, але в будь-якому разі не пізніше 30 днів з моменту звернення.",
+            text: "10.4. Не є підставою для повернення коштів: зміна наміру («передумав») чи відсутність потреби в Товарі; невикористання Товару після покупки; відсутність необхідного програмного забезпечення (Microsoft Excel) чи сумісного пристрою — у цьому разі Продавець допомагає з налаштуванням та надає консультацію; розкриті на Сайті на момент покупки обмеження бета-версії «Tempo Game» (наприклад, мобільні версії в тестуванні).",
           },
           {
             type: "p",
-            text: "10.5. Кошти повертаються тим самим способом, яким була здійснена оплата (на платіжну картку Покупця), у повному обсязі, без утримання комісій.",
+            text: "10.5. Порядок звернення. Заява подається на email tempohelp@proton.me або в Telegram-підтримку @tempo_help протягом 14 днів з дати покупки, із зазначенням електронної адреси, використаної для оплати, назви тарифу та короткого опису проблеми. Продавець спершу намагається усунути проблему (повторне надсилання, заміна файлу, допомога з налаштуванням); якщо це не вдається протягом 5 робочих днів — повертає кошти в повному обсязі тим самим способом оплати протягом 14 банківських днів. Перед зверненням до банку щодо оскарження платежу Покупець звертається до Продавця: обґрунтовані звернення розглядаються протягом 3 робочих днів. Детальний порядок визначено Політикою повернення.",
           },
           {
             type: "p",
@@ -736,22 +745,31 @@ export const oferta: Record<Locale, LegalDoc> = {
       {
         heading: "10. Quality, conformity, and refunds",
         blocks: [
-          { type: "p", text: "10.1. The Seller warrants that the Product conforms to the description published on the Site at the time of payment." },
           {
             type: "p",
-            text: "10.2. Refund without giving a reason. The Buyer may withdraw from this agreement and receive a full refund within 14 calendar days of the payment date, without giving a reason. The detailed procedure is set out in the Refund Policy.",
+            text: "10.1. The Product is digital content whose delivery begins immediately after payment. By paying for the Product, the Buyer gives express consent to immediate delivery of digital content and confirms that the right to withdraw from this agreement due to a change of mind does not apply once delivery has begun, to the extent permitted by Ukrainian law.",
+          },
+          { type: "p", text: "10.2. The Seller warrants that the Product conforms to the description published on the Site at the time of payment." },
+          {
+            type: "p",
+            text: "10.3. Conditional refunds. Notwithstanding clause 10.1, the Seller refunds payments within 14 days of the payment date for a valid reason:",
+          },
+          {
+            type: "list",
+            items: [
+              "the Product was not delivered, and the issue was not resolved within 72 hours of contacting support;",
+              "the Product materially does not match the plan's description published on the Site at the time of purchase (missing features or modules listed in the plan);",
+              "the Product has a technical defect (e.g., a broken file or formulas) that the Seller failed to fix or replace within 5 business days of being notified;",
+              "a duplicate or erroneous payment occurred.",
+            ],
           },
           {
             type: "p",
-            text: "10.3. How to request a refund. Submit a request by e-mail or via Telegram support (section 3), stating: the e-mail address used for the order, the payment date, and the Product name.",
+            text: "10.4. The following are not valid grounds for a refund: a change of mind or no longer needing the Product; not using the Product after purchase; lacking the required software (Microsoft Excel) or a compatible device — in this case the Seller will help with setup and provide a consultation; beta limitations of \"Tempo Game\" that were disclosed on the Site at the time of purchase (e.g., mobile versions still in testing).",
           },
           {
             type: "p",
-            text: "10.4. The Seller reviews the request within 3 business days and, if approved, refunds the funds within 5 business days, but in any case no later than 30 days from the request.",
-          },
-          {
-            type: "p",
-            text: "10.5. Funds are refunded using the same method used for payment (to the Buyer's payment card), in full, without deducting fees.",
+            text: "10.5. How to request a refund. Submit a request to tempohelp@proton.me or via Telegram support @tempo_help within 14 days of purchase, stating the e-mail address used for payment, the plan name, and a short description of the problem. The Seller will first try to resolve the issue (resend the Product, replace the file, or help with setup); if the issue cannot be resolved within 5 business days, the Seller refunds the funds in full using the original payment method within 14 banking days. Before opening a bank dispute, the Buyer should contact the Seller first: valid requests are reviewed within 3 business days. The detailed procedure is set out in the Refund Policy.",
           },
           {
             type: "p",
@@ -1174,22 +1192,31 @@ export const oferta: Record<Locale, LegalDoc> = {
       {
         heading: "10. Calidad, conformidad y devoluciones",
         blocks: [
-          { type: "p", text: "10.1. El Vendedor garantiza que el Producto se ajusta a la descripción publicada en el Sitio en el momento del pago." },
           {
             type: "p",
-            text: "10.2. Devolución sin justificación. El Comprador tiene derecho a desistir del contrato y obtener la devolución íntegra de las sumas pagadas dentro de los 14 días naturales siguientes a la fecha de pago, sin necesidad de justificación. El procedimiento detallado se establece en la Política de devoluciones.",
+            text: "10.1. El Producto es contenido digital cuya entrega comienza inmediatamente después del pago. Al pagar el Producto, el Comprador otorga su consentimiento expreso a la entrega inmediata de contenido digital y confirma que el derecho a desistir de este contrato por cambio de parecer no se aplica una vez iniciada la entrega, en la medida permitida por la legislación de Ucrania.",
+          },
+          { type: "p", text: "10.2. El Vendedor garantiza que el Producto se ajusta a la descripción publicada en el Sitio en el momento del pago." },
+          {
+            type: "p",
+            text: "10.3. Devolución condicional. No obstante el punto 10.1, el Vendedor devuelve los fondos dentro de los 14 días siguientes a la fecha de pago cuando exista un motivo justificado:",
+          },
+          {
+            type: "list",
+            items: [
+              "el Producto no fue entregado y el problema no se resolvió dentro de las 72 horas siguientes al contacto con soporte;",
+              "el Producto no se ajusta sustancialmente a la descripción del plan publicada en el Sitio en el momento de la compra (faltan módulos o funciones indicados en el plan);",
+              "el Producto presenta un defecto técnico (por ejemplo, un archivo o fórmulas dañados) que el Vendedor no logró corregir o sustituir dentro de los 5 días hábiles siguientes al aviso;",
+              "se produjo un pago duplicado o erróneo.",
+            ],
           },
           {
             type: "p",
-            text: "10.3. Procedimiento. La solicitud se presenta por correo electrónico o a través del soporte de Telegram (sección 3), indicando: el correo electrónico del pedido, la fecha de pago y el nombre del Producto.",
+            text: "10.4. No constituyen motivo de devolución: el cambio de parecer o la falta de necesidad del Producto; no usar el Producto tras la compra; no contar con el software necesario (Microsoft Excel) o un dispositivo compatible — en este caso el Vendedor ayudará con la configuración y ofrecerá una consulta; las limitaciones de la versión beta de «Tempo Game» divulgadas en el Sitio en el momento de la compra (por ejemplo, versiones móviles aún en pruebas).",
           },
           {
             type: "p",
-            text: "10.4. El Vendedor examina la solicitud dentro de los 3 días hábiles y, si la aprueba, devuelve los fondos dentro de los 5 días hábiles, pero en cualquier caso a más tardar 30 días después de la solicitud.",
-          },
-          {
-            type: "p",
-            text: "10.5. Los fondos se devuelven por el mismo medio utilizado para el pago (a la tarjeta de pago del Comprador), en su totalidad, sin descontar comisiones.",
+            text: "10.5. Procedimiento. La solicitud se presenta a tempohelp@proton.me o a través del soporte de Telegram @tempo_help dentro de los 14 días siguientes a la compra, indicando el correo electrónico utilizado para el pago, el nombre del plan y una breve descripción del problema. El Vendedor intentará primero resolver el problema (reenvío del Producto, sustitución del archivo o ayuda con la configuración); si no logra resolverlo dentro de los 5 días hábiles, devolverá los fondos en su totalidad por el mismo medio de pago dentro de los 14 días bancarios siguientes. Antes de iniciar una disputa bancaria, el Comprador debe contactar primero al Vendedor: las solicitudes justificadas se atienden dentro de los 3 días hábiles. El procedimiento detallado se establece en la Política de devoluciones.",
           },
           {
             type: "p",
@@ -2007,3 +2034,242 @@ export const privacyPolicy: Record<Locale, LegalDoc> = {
   },
 };
 
+export const refundPolicy: Record<Locale, LegalDoc> = {
+  uk: {
+    title: "Політика повернення",
+    updated: "09.08.2026",
+    intro:
+      "Товари Tempo — цифрові товари, які надаються миттєво. Ми повертаємо кошти протягом 14 днів, якщо щось справді пішло не так — і завжди спершу намагаємося вирішити проблему. Ми не повертаємо кошти через зміну наміру; натомість пропонуємо реальну допомогу: підтримку з налаштуванням та особисту консультацію.",
+    sections: [
+      {
+        heading: "1. Коли ви маєте право на повне повернення",
+        blocks: [
+          {
+            type: "p",
+            text: "Ви маєте право на повне повернення коштів, якщо протягом 14 днів з моменту оплати виникла одна з таких ситуацій:",
+          },
+          {
+            type: "list",
+            items: [
+              "Товар не надано — ви не отримали файл або доступ, звернулися до підтримки, і ми не змогли надати Товар протягом 72 годин;",
+              "Товар суттєво не відповідає опису на Сайті на момент покупки (відсутні модулі чи функції, заявлені у вашому тарифі);",
+              "Товар має технічний дефект (наприклад, пошкоджений файл чи формули), який ми не змогли усунути або замінити протягом 5 робочих днів після вашого звернення;",
+              "подвійна або помилкова оплата — з вас списали кошти двічі або на неправильну суму.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "2. Що не є підставою для повернення",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "зміна наміру або відсутність потреби в Товарі;",
+              "невикористання Товару після покупки;",
+              "відсутність необхідного програмного забезпечення (Microsoft Excel) чи сумісного пристрою — вимоги вказані на Сайті; у такому разі ми допоможемо з налаштуванням і проведемо консультацію;",
+              "обмеження бета-версії «Tempo Game», розкриті на Сайті на момент покупки (наприклад, мобільні версії ще тестуються).",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "3. Як це працює",
+        blocks: [
+          {
+            type: "p",
+            text: "3.1. Зверніться до нас протягом 14 днів з дати покупки: Telegram @tempo_help або email tempohelp@proton.me. Вкажіть email, використаний для оплати, назву тарифу та короткий опис проблеми (скриншот допоможе).",
+          },
+          {
+            type: "p",
+            text: "3.2. Спершу ми усуваємо проблему. Ми намагаємося вирішити питання: повторно надсилаємо Товар, замінюємо файл або допомагаємо з налаштуванням. Більшість звернень вирішується так протягом дня.",
+          },
+          {
+            type: "p",
+            text: "3.3. Якщо обґрунтовану проблему не вдалося усунути протягом 5 робочих днів, ми повертаємо кошти в повному обсязі тим самим способом оплати протягом 14 банківських днів. Точний строк надходження коштів залежить від вашого банку.",
+          },
+        ],
+      },
+      {
+        heading: "4. Звернення замість чарджбеку",
+        blocks: [
+          {
+            type: "p",
+            text: "Якщо щось пішло не так, будь ласка, зверніться до нас до відкриття спору в банку — ми вирішуємо обґрунтовані випадки швидше, ніж процедура чарджбеку, і відповідаємо на кожне звернення протягом 3 робочих днів.",
+          },
+        ],
+      },
+      {
+        heading: "5. Зв'язок із Публічною офертою",
+        blocks: [
+          {
+            type: "p",
+            text: "Ця Політика повернення є невід'ємною частиною Публічної оферти та деталізує розділ 10 «Якість, відповідність та повернення коштів». У разі суперечностей між документами застосовуються умови цієї Політики як спеціального документа щодо повернення коштів.",
+          },
+          {
+            type: "p",
+            text: "Незалежно від умов цієї Політики, Покупець-Споживач зберігає всі права, передбачені Законом України «Про захист прав споживачів».",
+          },
+        ],
+      },
+    ],
+  },
+  en: {
+    title: "Refund Policy",
+    updated: "August 9, 2026",
+    intro:
+      "Tempo products are digital goods delivered instantly. We refund purchases within 14 days when something is genuinely wrong — and we always try to fix the problem first. We do not refund for a change of mind; instead, we offer real help: setup assistance and a personal consultation.",
+    sections: [
+      {
+        heading: "1. When you're eligible for a full refund",
+        blocks: [
+          {
+            type: "p",
+            text: "You are eligible for a full refund if, within 14 days of purchase, one of the following applies:",
+          },
+          {
+            type: "list",
+            items: [
+              "The product was not delivered — you did not receive the file or access, you contacted support, and we failed to deliver within 72 hours;",
+              "The product materially does not match its description on the Site at the time of purchase (missing modules or functions listed in your plan);",
+              "The product has a technical defect (e.g., a broken file or formulas) that we failed to fix or replace within 5 business days after you reported it;",
+              "Duplicate or erroneous payment — you were charged twice or charged the wrong amount.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "2. What is not a valid reason for a refund",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "Change of mind, or no longer needing the product;",
+              "Not using the product after purchase;",
+              "Not having the required software (Microsoft Excel) or a supported device — the requirements are listed on the Site; in this case we will help you set things up and offer a consultation;",
+              "Beta limitations of Tempo Game that were disclosed on the Site at the time of purchase (e.g., mobile versions in testing).",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "3. How it works",
+        blocks: [
+          {
+            type: "p",
+            text: "3.1. Contact us within 14 days of purchase: Telegram @tempo_help or email tempohelp@proton.me. Include the email used for payment, the plan name, and a short description of the problem (a screenshot helps).",
+          },
+          {
+            type: "p",
+            text: "3.2. We fix it first. We will try to resolve the issue — re-deliver, replace the file, or walk you through setup. Most issues are solved this way within a day.",
+          },
+          {
+            type: "p",
+            text: "3.3. If we cannot resolve an eligible issue within 5 business days, we will issue a full refund to the original payment method within 14 banking days. The exact time for funds to arrive depends on your bank.",
+          },
+        ],
+      },
+      {
+        heading: "4. A request instead of a chargeback",
+        blocks: [
+          {
+            type: "p",
+            text: "If anything went wrong, please contact us before opening a bank dispute — we resolve eligible cases faster than a chargeback procedure, and we respond to every request within 3 business days.",
+          },
+        ],
+      },
+      {
+        heading: "5. Relationship to the Terms of Service",
+        blocks: [
+          {
+            type: "p",
+            text: "This Refund Policy is an integral part of the Terms of Service and elaborates on section 10 (\"Quality, conformity, and refunds\"). In case of any conflict between the documents, this Policy governs as the specific document on refunds.",
+          },
+          {
+            type: "p",
+            text: "Regardless of the terms of this Policy, a Buyer who is a Consumer retains all rights under the Law of Ukraine \"On Consumer Rights Protection.\"",
+          },
+        ],
+      },
+    ],
+  },
+  es: {
+    title: "Política de devoluciones",
+    updated: "9 de agosto de 2026",
+    intro:
+      "Los productos de Tempo son bienes digitales que se entregan de forma instantánea. Devolvemos el dinero dentro de los 14 días siguientes a la compra cuando algo realmente ha ido mal, y siempre intentamos solucionar el problema primero. No realizamos devoluciones por cambio de parecer; en su lugar, ofrecemos ayuda real: asistencia con la configuración y una consulta personal.",
+    sections: [
+      {
+        heading: "1. Cuándo tienes derecho a una devolución íntegra",
+        blocks: [
+          {
+            type: "p",
+            text: "Tienes derecho a una devolución íntegra si, dentro de los 14 días siguientes a la compra, se da alguna de estas situaciones:",
+          },
+          {
+            type: "list",
+            items: [
+              "El producto no fue entregado — no recibiste el archivo o el acceso, contactaste al soporte y no logramos entregarlo dentro de las 72 horas;",
+              "El producto no se ajusta sustancialmente a su descripción en el Sitio en el momento de la compra (faltan módulos o funciones indicados en tu plan);",
+              "El producto presenta un defecto técnico (por ejemplo, un archivo o fórmulas dañados) que no logramos corregir o sustituir dentro de los 5 días hábiles siguientes a tu aviso;",
+              "Pago duplicado o erróneo — se te cobró dos veces o se te cobró un importe incorrecto.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "2. Qué no es un motivo válido de devolución",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "Cambio de parecer o falta de necesidad del producto;",
+              "No usar el producto después de comprarlo;",
+              "No contar con el software necesario (Microsoft Excel) o un dispositivo compatible — los requisitos están indicados en el Sitio; en este caso te ayudaremos con la configuración y te ofreceremos una consulta;",
+              "Limitaciones de la versión beta de Tempo Game divulgadas en el Sitio en el momento de la compra (por ejemplo, versiones móviles en pruebas).",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "3. Cómo funciona",
+        blocks: [
+          {
+            type: "p",
+            text: "3.1. Contáctanos dentro de los 14 días siguientes a la compra: Telegram @tempo_help o email tempohelp@proton.me. Indica el correo utilizado para el pago, el nombre del plan y una breve descripción del problema (una captura de pantalla ayuda).",
+          },
+          {
+            type: "p",
+            text: "3.2. Primero solucionamos el problema. Intentaremos resolver la incidencia: reenviar el producto, sustituir el archivo o guiarte en la configuración. La mayoría de los casos se resuelven así en un día.",
+          },
+          {
+            type: "p",
+            text: "3.3. Si no logramos resolver un problema justificado dentro de los 5 días hábiles, realizaremos una devolución íntegra al método de pago original dentro de los 14 días bancarios siguientes. El plazo exacto de llegada de los fondos depende de tu banco.",
+          },
+        ],
+      },
+      {
+        heading: "4. Una solicitud en lugar de un contracargo",
+        blocks: [
+          {
+            type: "p",
+            text: "Si algo salió mal, por favor contáctanos antes de abrir una disputa con tu banco — resolvemos los casos justificados más rápido que un procedimiento de contracargo, y respondemos a cada solicitud dentro de los 3 días hábiles.",
+          },
+        ],
+      },
+      {
+        heading: "5. Relación con la Oferta pública",
+        blocks: [
+          {
+            type: "p",
+            text: "Esta Política de devoluciones forma parte integral de la Oferta pública y desarrolla la sección 10 («Calidad, conformidad y devoluciones»). En caso de conflicto entre los documentos, prevalece esta Política como documento específico sobre devoluciones.",
+          },
+          {
+            type: "p",
+            text: "Independientemente de las condiciones de esta Política, el Comprador que sea Consumidor conserva todos los derechos previstos en la Ley de Ucrania «Sobre la Protección de los Derechos del Consumidor».",
+          },
+        ],
+      },
+    ],
+  },
+};

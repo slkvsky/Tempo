@@ -406,6 +406,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       contactHref: "https://t.me/tempo_help",
       legalLinks: [
         { label: "Публічна оферта", href: "/oferta" },
+        { label: "Політика повернення", href: "/refund" },
         { label: "Політика конфіденційності", href: "/privacy" },
       ],
       copyright: "© 2026 Tempo. Зроблено з ясністю в голові.",
@@ -649,6 +650,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       contactHref: "https://t.me/tempo_help",
       legalLinks: [
         { label: "Terms of Service", href: "/en/oferta" },
+        { label: "Refund Policy", href: "/en/refund" },
         { label: "Privacy Policy", href: "/en/privacy" },
       ],
       copyright: "© 2026 Tempo. Made with a clear head.",
@@ -892,6 +894,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       contactHref: "https://t.me/tempo_help",
       legalLinks: [
         { label: "Términos y condiciones", href: "/es/oferta" },
+        { label: "Política de devoluciones", href: "/es/refund" },
         { label: "Política de privacidad", href: "/es/privacy" },
       ],
       copyright: "© 2026 Tempo. Hecho con la cabeza despejada.",
