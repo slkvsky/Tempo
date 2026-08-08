@@ -15,6 +15,7 @@ import { duration, stagger, ease } from "@/lib/motion-tokens";
 import { fadeRise, popIn, scaleIn, wipeReveal } from "@/components/motion/variants";
 import { MaskedLines } from "@/components/motion/MaskedLines";
 import { OrbitMark } from "@/components/ui/OrbitMark";
+import { paymentLinks } from "@/content/payment-links";
 import styles from "./QuizSection.module.css";
 
 interface QuizSectionProps {
@@ -262,6 +263,8 @@ export function QuizSection({ locale }: QuizSectionProps) {
 
   const tier = pricing.tiers.find((t) => t.id === tariff);
   const totalPrice = (tier?.priceNow ?? 0) + (gameBundleChecked ? game.priceNow : 0);
+  const checkoutHref =
+    (gameBundleChecked ? paymentLinks.tariffWithGame[tariff] : paymentLinks.tariff[tariff]) ?? "#";
 
   const selectedModuleLabels = quiz.step1.modules
     .filter((m) => modules.has(m.id))
@@ -690,7 +693,7 @@ export function QuizSection({ locale }: QuizSectionProps) {
                   )}
 
                   <motion.a
-                    href="#"
+                    href={checkoutHref}
                     className={styles.primaryBtn}
                     variants={reduceMotion ? undefined : scaleIn(0)}
                     whileHover={reduceMotion ? undefined : { y: -2 }}
