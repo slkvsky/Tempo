@@ -54,13 +54,28 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const homeHref = locale === "uk" ? "/" : `/${locale}/`;
+  const normalize = (path: string) => (path.endsWith("/") ? path : `${path}/`);
+  const isHomePage = normalize(pathname ?? "/") === normalize(homeHref);
+
+  // On a fresh load of the home page with a hash in the URL (e.g. arriving
+  // from a legal page's "#pricing-heading" link), the browser's native jump
+  // happens before layout/motion settle and before Lenis takes over the
+  // scroll loop, so it often lands in the wrong place. Redo it once things
+  // have painted.
+  useEffect(() => {
+    if (!isHomePage || typeof window === "undefined" || !window.location.hash) return;
+    const hash = window.location.hash;
+    const raf = requestAnimationFrame(() => scrollToAnchor(hash));
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.startsWith("#") || href === "#") return;
+    if (!isHomePage || !href.startsWith("#") || href === "#") return;
     event.preventDefault();
     scrollToAnchor(href);
   };
-
-  const homeHref = locale === "uk" ? "/" : `/${locale}/`;
 
   return (
     <motion.header
@@ -79,7 +94,7 @@ export function Header() {
           {content.navLinks.map((link) => (
             <li key={link.href}>
               <a
-                href={link.href}
+                href={isHomePage ? link.href : `${homeHref}${link.href}`}
                 className={styles.navLink}
                 onClick={(event) => handleNavClick(event, link.href)}
               >
@@ -93,7 +108,7 @@ export function Header() {
       <div className={styles.actions}>
         <LanguageSwitcher locale={locale} />
         <a
-          href="#quiz-heading"
+          href={isHomePage ? "#quiz-heading" : `${homeHref}#quiz-heading`}
           data-cursor-text={content.cursorStart}
           className={styles.cta}
           onClick={(event) => handleNavClick(event, "#quiz-heading")}
